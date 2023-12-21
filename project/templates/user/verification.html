@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>OTP Verification</title>
+</head>
+<body>
+    <div class="relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-50 py-12">
+        <div class="relative bg-white px-6 pt-10 pb-9 shadow-xl mx-auto w-full max-w-lg rounded-2xl">
+          <div class="mx-auto flex w-full max-w-md flex-col space-y-16">
+            <div class="flex flex-col items-center justify-center text-center">
+              <div class="font-semibold text-3xl">
+                <p>Email Verification</p>
+              </div>
+              <div class="flex flex-row text-sm font-medium text-green-600">
+                <p>We have sent a code to your email {{email}}</p>
+              </div>
+            </div>
+      
+            <div>
+                <form class="m-0" action="{% url 'verification' email %}" method="post">
+                    {% csrf_token %} {% if messages %} {% for message in messages %} {% if message.tags == "success" %}
+                    <div class="'alert alert-success" role="alert">{{message}}</div>
+                    {% else %}
+                    <div class="'alert alert-danger" role="alert"><strong>Error! </strong>{{message}}</div>
+                    {% endif %} {% endfor %} {% endif %}
+                <div class="flex flex-col space-y-16">
+                  <div class="flex flex-row items-center justify-between mx-10 w-full max-w-xs my-5">
+                    <div class="w-24 h-16 mr-3 ">
+                        <input style="width:50px;" class="w-full h-full flex flex-col px-4 outline-none rounded-xl border border-gray-700 text-lg bg-gray-100 focus:bg-gray-50 focus:ring-1 ring-blue-700" type="text" name="otp1" id="input1" oninput="moveToNextInput('input2')" maxlength="1">
+                    </div>
+                    <div class="w-24 h-16 mr-3 ">
+                        <input style="width:50px;" class="w-full h-full flex flex-col  px-4 outline-none rounded-xl border border-gray-700 text-lg bg-gray-100 focus:bg-gray-50 focus:ring-1 ring-blue-700" type="text" name="otp2" id="input2" oninput="moveToNextInput('input3')" maxlength="1">
+                      </div>
+                      <div class="w-16 h-16 mr-3 ">
+                        <input style="width:50px;"  class="w-full h-full flex flex-col px-4
+                        outline-none rounded-xl border border-gray-700 text-lg bg-gray-100 focus:bg-gray-50 focus:ring-1 ring-blue-700" type="text" name="otp3" id="input3" oninput="moveToNextInput('input4')" maxlength="1">
+                      </div>
+                    <div class="w-16 h-16 mr-3">
+                      <input style="width:50px;" class="w-full h-full flex flex-col  px-4 outline-none rounded-xl border border-gray-700 text-lg bg-gray-100 focus:bg-gray-50 focus:ring-1 ring-blue-700" type="text" name="otp4" id="input4" oninput="moveToNextInput('input5')" maxlength="1">
+                    </div>
+                    <div class="w-16 h-16 mr-3">
+                      <input style="width:50px;" class="w-full h-full flex flex-col  px-4 outline-none rounded-xl border border-gray-700 text-lg bg-gray-100 focus:bg-gray-50 focus:ring-1 ring-blue-700" type="text" name="otp5" id="input5" oninput="moveToNextInput('input6')" maxlength="1">
+                    </div>
+                    <div class="w-16 h-16 mr-3 ">
+                      <input style="width:50px;" class="w-full h-full flex flex-col px-4
+                      outline-none rounded-xl border border-gray-700 text-lg bg-gray-100 focus:bg-gray-50 focus:ring-1 ring-blue-700" type="text" name="otp6" id="input6" oninput="moveToNextInput(input7)" maxlength="1">
+                    </div>
+                  </div>
+      
+                  <div class="flex flex-col space-y-5">
+                    <div>
+                      <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="flex flex-row items-center justify-center text-center w-full h-12 border rounded-xl outline-none py-5 bg-[#844E23] border-none text-white text-sm shadow-sm"id="input7">
+                        Verify Account
+                      </button>
+                    </div>
+      
+                    <div class="flex flex-row items-center justify-center text-center text-sm font-medium space-x-1 text-gray-500">
+                      <p>Didn't recieve code?</p> <a class="flex flex-row items-center text-blue-600" href="{% url 'resendotp' email %}" >Resend</a>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+      <script>
+        function moveToNextInput(nextInputId) {
+            var currentInput = document.activeElement;
+            var maxLength = parseInt(currentInput.getAttribute('maxlength'));
+    
+            // Check if the current input is at its maximum length
+            if (currentInput.value.length === maxLength) {
+                // Focus on the next input field
+                var nextInput = document.getElementById(nextInputId);
+                if (nextInput) {
+                    nextInput.focus();
+                }
+            }
+        }
+    </script>
+</body>
+</html>

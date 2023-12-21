@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}products {% endblock title %}
+{% block content %}
+
+<img src="{% static 'images/banner2.webp' %}" style="height: 400px; width: 100%;">
+<div class=" overflow-x-auto">
+
+  
+<div class="flex flex-wrap justify-center">
+  {% if products %}
+    {% for product in products %}
+    <a href="{% url 'product_details' product.id %}">
+      <div class="m-10  max-w-xs overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md transition-transform transform hover:scale-105" style="width: 200px; height: 350px;">
+        <img class="object-cover" src="{{ product.img1.url }}" alt="product image" style="height: 200px; width: 200px; align-items: center;"/>
+        <div class="mt-4 pb-5">
+          <div class="flex justify-center", style="height: 50px; width: 100%;">
+        
+            <p class= "tracking-tight text-center font-semibold">{{ product.productname }}</p>
+          
+        </div>
+          <div class="mt-2 mb-5 flex items-center justify-center">
+            <p>
+              <span class="text-2xl font-bold text-slate-900 text-center">{{ product.price }}</span>
+              <span class="text-sm text-slate-900 line-through text-center">{{ product.price }}</span>
+            </p>
+            <div class="flex items-center">
+              <!-- Your existing rating stars and other icons -->
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+  {% endif %}
+</div>
+{% endblock content %}

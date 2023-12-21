@@ -1,0 +1,66 @@
+
+{% extends 'base.html' %}
+{% block title %} Profile {% endblock title %}
+{% block content %}
+{% include 'profile.html'%}
+
+<div class="bg-white p-6 rounded-lg border shadow-md w-1/2 m-5">
+    <div class="mb-2 flex justify-end">
+    <a href="{% url 'edit_profile' %}"><i class="fa fa-edit block text-black"></i></a>
+
+
+
+    </div>
+    <div class="mb-4 flex justify-center">
+        {% if user.pro_pic %}
+        <img src="{{ user.pro_pic.url }}" alt="Profile Picture" class="rounded-full w-24 h-24">
+        {% endif %}
+    </div>
+    <div class="mb-2 flex justify-between">
+        <h2 class="text-black font-semibold"> Name</h2>
+        <h2 class="text-black font-semibold">{{user.name }} </h2>
+    </div>
+    <div class="mb-2 flex justify-between">
+        <h2 class="text-black font-semibold"> email</h2>
+        <h2 class="text-black font-semibold">{{user.email }} </h2>
+    </div>
+    <div class="mb-2 flex justify-between">
+        <h2 class="text-black font-semibold"> Created Date</h2>
+        <h2 class="text-black font-semibold">{{user.created_date }} </h2>
+    </div>
+    <div class="mb-2 flex justify-between">
+        <h2 class="text-black font-semibold"> Phone Number</h2>
+        <h2 class="text-black font-semibold">{{user.phone_Number }} </h2>
+    </div>
+   
+    <div class="mb-2 flex justify-between">
+        <h2 class="text-black font-semibold"> Date of Birth</h2>
+        <h2 class="text-black font-semibold">{{user.date_of_birth }} </h2>
+    </div>
+    <div class="">
+        <h2 class="text-black font-semibold"> Address</h2>
+        {% if user.addresses %}
+        <div class="flex space-x-4">
+            {% for i in user.addresses.all %}
+            <div class="bg-yellow-100 px-4 py-4 h-auto m-5" style="width:300px">
+                <div class="flex items-center space-x-4 align-items: flex-end">
+                    <a href="{% url 'get_address' i.id %}"><i class="fa fa-edit block text-black" type="button"></i></a>
+                    <a href="{% url 'remove_address' i.id %}"><i class="fa fa-trash"></i></a>
+                </div>
+
+            <p>{{i.full_name }}</p>
+            <p>{{i.address}}</p>
+            <p>{{i.city}}</p>
+            <p>{{i.country}}</p>
+            <p>{{i.pincode}}</p>
+        </div>
+        {% if forloop.counter|divisibleby:2 %}
+                            </div>
+        <div class="flex space-x-4 flex-wrap">{% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    </div>
+   
+</div>
+{% endblock content %}

@@ -1,0 +1,54 @@
+
+  
+
+  {% extends 'base.html' %}
+  {% block title %}My orders {% endblock title %}
+  {% block content %}
+  {% include 'profile.html' %}
+     
+  <div class="bg-yellow-50 w-3/4  m-5 text-gray-800">
+      {% if orders %}
+      
+          <div class="flex flex-col m-5"> 
+            <h1 class="text-2xl font-semibold ">My Orders</h1>
+            {% for order in orders %}
+            <div class=" rounded-sm bg-white p-6 shadow-md m-5 " style="width:700px;">
+              <div class="m-4 flex justify-between">
+                <div>
+                    <p class="text-sm font-semibold">Order Number</p>
+                    <p class="text-md font-semibold">#Tiara00000{{ order.id }}</p>
+                    <p class="text-md font-semibold">Placed:{{ order.order_date }}</p>
+                </div>
+                <div>
+               <a href="{% url 'order_details' order.id %}" ><button class="font-semibold text-sm border border-gray-500 px-3 py-1 rounded-lg ">Order Details</button></a>
+              </div>
+            </div>
+           
+            {% for order_item in order.orders.all %}
+            {% if order.status == 'confirmed' %}
+            <p class="text-md font-semibold">{{ order_item.quantity }} Items Confirmed</p>
+            {% elif order.status == 'cancelled' %}
+            <p class="text-md font-semibold">{{ order_item.quantity }} Items Cancelled</p>
+            {% elif order.status == 'shipped' %}
+            <p class="text-md font-semibold">{{ order_item.quantity }} Items Shipped</p>
+            {% elif order.status == 'delivered' %}
+            <p class="text-md font-semibold">{{ order_item.quantity }} Items Delivered</p>
+              {% endif %}
+            
+
+            <img src="{{ order_item.product.img1.url }}" alt="product-image" class="rounded-lg sm:w-40" style="height:100px; width:100px;" />
+            <p>Qty: {{ order_item.quantity }}</p>
+            {% endfor %}
+                      
+                   
+                  
+              
+
+                      </div>
+        {% endfor %}
+
+      {% endif %}
+    </div>
+  </div>
+  
+{% endblock %}      

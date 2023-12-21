@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %} Categories {% endblock title %}
+{% block content %}
+
+<h2>{{ category.name }}</h2>
+<div class="flex items justify-center items-center md:flex-row pr-0 flex-col items-center">
+    {% for product in products %}
+    <a href="{% url 'product_details' product.id %}">
+        <div class="m-10  max-w-xs overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md transition-transform transform hover:scale-105" style="width: 200px; height: 350px;">
+          <img class="object-cover" src="{{ product.img1.url }}" alt="product image" style="height: 200px; width: 200px; align-items: center;"/>
+          <div class="mt-4 pb-5">
+            <div class="flex justify-center", style="height: 50px; width: 100%;">
+          
+              <p class= "tracking-tight text-center font-semibold">{{ product.productname }}</p>
+            
+          </div>
+            <div class="mt-2 mb-5 flex items-center justify-center">
+              <p>
+                <span class="text-3xl font-bold text-slate-900 text-center">{{ product.price }}</span>
+                <span class="text-sm text-slate-900 line-through text-center">{{ product.price }}</span>
+              </p>
+              <div class="flex items-center">
+                <!-- Your existing rating stars and other icons -->
+                
+              </div>
+            </div>
+          </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock content %}

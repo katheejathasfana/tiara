@@ -1,0 +1,16 @@
+{% extends 'payment.html' %}
+{% block content %}
+<body>
+<div class="bg-yellow-100 shadow-md m-5 mt-10 text-center flex flex-col justify-center items-center" style="height: 150px; width: 400px;">
+    <form method="post" action="{% url 'place_order' address_id=address.id %}">
+        {% csrf_token %}
+        <input type="hidden" name="order_id" value="{{ order.id }}">
+        <h5 class="font-semibold">Pay at your doorstep</h5>
+        <button class="bg-yellow-900 px-5 h-10 rounded-md mt-5 text-xl text-white">Place Order</button>
+    </form>
+</div>
+
+
+{% endblock content %}
+
+</body>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Update Products</title>
+</head>
+<body>
+    <div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-md shadow-md">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Update Product</h2>
+        
+        <form action="{% url 'update_product' product.id %}" method="POST" enctype="multipart/form-data">
+
+          {% csrf_token %}
+          {% if messages %}
+            <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4" role="alert">
+              <p class="font-bold">Alert!</p>
+              {% for message in messages %}
+                {{ message }}
+              {% endfor %}
+            </div>
+          {% endif %}
+          
+         {% if product %}
+          <div class="mb-4">
+            <label for="name" class="block text-sm font-medium text-gray-600">Product Name</label>
+            <input type="text" id="name" name="name" class="mt-1 p-2 w-full border rounded-md" value="{{product.productname}}">
+          </div>
+
+          <div class="mb-4">
+            <label for="categoory" class="block text-sm font-medium text-gray-600">Category</label>
+            <select
+            id="category"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            name="category" value="{{product.category}}">
+            
+            {% for category in categories %} {% if category.active %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endif %} {% endfor %}
+        </select>
+        </div>
+          
+          <div class="mb-4">
+            <label for="price" class="block text-sm font-medium text-gray-600">Price</label>
+            <input type="text" id="price" name="price" class="mt-1 p-2 w-full border rounded-md" value="{{product.price}}">
+          </div>
+          <div class="mb-4">
+            <label for="stock" class="block text-sm font-medium text-gray-600">Stock</label>
+            <input type="text" id="stock" name="stock" class="mt-1 p-2 w-full border rounded-md" value="{{product.stock}}">
+        </div>
+        
+        <div class="mb-4">
+            <label for="image1" class="block text-sm font-medium text-gray-600">Image1</label>
+        
+            {% if product.img1 %}
+                <img src="{{ product.img1.url }}" alt="Current Image1" class="mb-2 border rounded-md">
+            {% endif %}
+        
+            <input type="file" id="img1" name="img1" class="mt-1 p-2 w-full border rounded-md">
+            <p class="mt-2 text-sm text-gray-500">Upload a new image for Image1 (leave blank to keep the current image).</p>
+        </div>
+        
+         
+          <div class="mb-4">
+            <label for="image2" class="block text-sm font-medium text-gray-600">Image2</label>
+        
+            <!-- Display current image if it exists -->
+            {% if product.img2 %}
+                <img src="{{ product.img2.url }}" alt="Current Image2" class="mb-2 border rounded-md">
+            {% endif %}
+        
+            <input type="file" id="img2" name="img2" class="mt-1 p-2 w-full border rounded-md">
+            <p class="mt-2 text-sm text-gray-500">Upload a new image for Image4 (leave blank to keep the current image).</p>
+        </div>
+         
+          <div class="mb-4">
+            <label for="image3" class="block text-sm font-medium text-gray-600">Image3</label>
+        
+            <!-- Display current image if it exists -->
+            {% if product.img3 %}
+                <img src="{{ product.img3.url }}" alt="Current Image3" class="mb-2 border rounded-md">
+            {% endif %}
+        
+            <input type="file" id="img3" name="img3" class="mt-1 p-2 w-full border rounded-md">
+            <p class="mt-2 text-sm text-gray-500">Upload a new image for Image4 (leave blank to keep the current image).</p>
+        </div>
+         
+
+          <div class="mb-4">
+            <label for="image4" class="block text-sm font-medium text-gray-600">Image4</label>
+        
+            <!-- Display current image if it exists -->
+            {% if product.img4 %}
+                <img src="{{ product.img4.url }}" alt="Current Image4" class="mb-2 border rounded-md">
+            {% endif %}
+        
+            <input type="file" id="img4" name="img4" class="mt-1 p-2 w-full border rounded-md">
+            <p class="mt-2 text-sm text-gray-500">Upload a new image for Image4 (leave blank to keep the current image).</p>
+        </div>
+
+        <div class="mb-4">
+          <label for="description" class="block text-sm font-medium text-gray-600">Description</label>
+          <textarea id="description" name="description" class="mt-1 p-2 w-full border rounded-md">{{product.description}}</textarea>
+      </div>
+      
+        
+          
+        
+          <div class="flex items-center justify-end mt-4">
+            <button type="submit" class="px-4 py-2 bg-yellow-900 text-white rounded-md focus:outline-none focus:ring">
+              Update
+            </button>
+          </div>
+          {% endif %}
+        </form>
+      </div>
+      
+    
+</body>
+</html>

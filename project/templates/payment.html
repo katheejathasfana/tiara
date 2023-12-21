@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Document</title>
+</head>
+<body>
+  {% include 'payment_option.html' %}
+
+  {% block content %}
+  {% endblock content %}
+
+
+    <div class="sm:w-1 md:w-1/4 lg:w-1/4 xl:w-1/4 mt-10">
+    <div class="bg-white p-6 rounded-lg border shadow-md">
+        <!-- Your checkout summary content goes here -->
+        <div class="mb-2 flex justify-between">
+            <h2 class="text-black font-semibold"> Bag</h2>
+            <h2 class="text-black font-semibold">{{total_quantity }} Items</h2>
+        </div>
+        
+        <div class="mb-2 flex justify-between">
+            <p class="text-gray-700">Subtotal</p>
+            <p class="text-gray-700">{{total}}</p>
+        </div>
+        <div class="flex justify-between">
+            <p class="text-gray-700">Shipping</p>
+            <p class="text-gray-700">49.00</p>
+        </div>
+        <hr class="my-4" />
+        <div class="flex justify-between">
+            <p class="text-lg font-bold">Total</p>
+            
+                <p class=" text-lg font-bold">{{ Grand_total}}</p>
+            </div>
+               
+            
+        </div>
+        <div class="bg-white mt-3  p-6 rounded-lg border shadow-md ">
+         <div class="text-lg font-semibold">Shipping Address</div>
+            <p>{{ address.fullname }}</p>
+            <p>{{ address.address }}</p>
+            <p>{{ address.city }}</p>
+            <p>{{ address.country }}</p>
+            <p>{{ address.pincode }}</p>
+            <p>{{ address.phone_No }}</p>
+        </div>
+      
+    </div>
+    </div>
+    
+    
+ 
+    </body>
+    </html>

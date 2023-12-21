@@ -1,0 +1,119 @@
+{%  extends 'list.html' %}
+  {% block content %} 
+  <main class="ml-60 pt-16 max-h-screen overflow-auto">
+  <div class="bg-yellow-50 w-3/4 h-auto m-5 text-gray-800">
+      {% if order %}
+      
+          <div class="flex flex-col m-5"> 
+            <h1 class="text-2xl font-semibold ">Order Details</h1>
+            
+            <div class=" rounded-sm bg-white p-6 shadow-md m-5 " style="width:700px;">
+              <div class="m-4 flex justify-between">
+                <div>
+                    <p class="text-sm font-semibold">Order Number</p>
+                    <p class="text-md font-semibold">#Tiara00000{{ order.id }}</p>
+                    <p class="text-md font-semibold">Placed:{{ order.order_date }}</p>
+                </div>
+                <div>
+                  
+                
+                    <p class="text-sm font-semibold text-center">Total Amount <br>{{ order.Grand_total }}</p>
+                </div>
+            </div>
+            <hr>
+            
+            <div class="m-5  ">
+            <p class="text-lg font-semibold ">Shipping Address</p>
+              <p class="text-sm font-semibold">{{order.address.full_name}}</p>
+              <p class="text-sm font-semibold">{{order.address.address}}  {{order.address.city }}</p>
+         
+              <p class="text-sm font-semibold">{{order.address.country}}- {{order.address.pincode}}</p>
+         
+              <p class="text-sm font-semibold">{{order.address.phone_No}}</p>
+          </div>
+          <hr>
+
+          <div class="m-5 ">
+            {% for order_item in order.orders.all %}
+            <div class="m-4 flex justify-between">
+              <div>
+                
+            <p class="text-md font-semibold ">Order Items:</p>
+                
+                    <div>
+                      {% if order.status == 'confirmed' %}
+                  <p class="text-md font-semibold">{{ order_item.quantity }} Items Ordered</p>
+              {% elif order.status == 'cancelled' %}
+                  <p class="text-md font-semibold">{{ order_item.quantity }} Items Cancelled</p>
+              {% elif order.status == 'shipped' %}
+                  <p class="text-md font-semibold">{{ order_item.quantity }} Items Shipped</p>
+              {% elif order.status == 'delivered' %}
+                  <p class="text-md font-semibold">{{ order_item.quantity }} Items Delivered</p>
+              {% endif %}
+                     
+                        <p> {{ order_item.product.productname }}</p>
+                      </div>
+                   </div>
+                   <div>
+                    <form method="post" action="{% url 'cancel_order' order.id %}">
+                      {% csrf_token %}
+                      {% if order.status != 'cancelled' and order.status != 'delivered' %}
+                          <button class="bg-yellow-900 px-4 py-2 rounded-lg text-white text-sm font-semibold items-center">Cancel Order</button>
+                      {% else %}
+                          <p class="font-semibold items-center">Cancelled</p>
+                      {% endif %}
+                      
+                  </form>
+                </div>
+                  </div>
+                        <div class="m-4 flex justify-between">
+                          <div>
+                        <img src="{{ order_item.product.img1.url }}" alt="product-image" class="rounded-lg sm:w-40" style="height:100px; width:100px;" />
+                        <p>Qty: {{ order_item.quantity }}</p>
+                      </div>
+                      <div>
+                        <p class=" text-sm font-semibold text-center">Rs {{order_item.product.price}}</p>
+                      </div>
+                    
+
+                    </div>
+                    <hr>
+                    {% endfor %}
+                    </div>
+                    
+                  
+              <p class="text-lg font-semibold mt-5 ">Payment Details</p>
+              <div class="flex justify-between">
+              <div class="m-5">
+              
+              <p class="text-sm font-semibold mt-1">Payment Method</p>
+              <p class="text-sm font-semibold mt-1">Sub Total (Inclusive Tax)</p>
+              <p class="text-sm font-semibold mt-1">Discount</p>
+              <p class="text-sm font-semibold mt-1">Shipping Charges</p>
+              <p class="text-md font-semibold mt-1">Total</p>
+            </div>
+
+            <div class="m-5">
+              
+              <p class="text-sm font-semibold mt-1">{{order.payment_method}}</p>
+              
+              <p class="text-sm font-semibold mt-1">Rs {{order.total_amount}}</p>
+              <p class="text-sm font-semibold mt-1">Rs 0</p>
+              <p class="text-sm font-semibold mt-1">Rs {{order.shipping_charge}}</p>
+              <p class="text-md font-semibold mt-1">Rs {{order.Grand_total}}</p>
+            </div>
+            </div>
+
+                
+            </div>
+          </div>      
+                  
+              
+    
+          </div>
+        
+      {% endif %}
+    </div>
+</main>    
+
+    {% endblock content %}

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %} Product Details {% endblock title %}
+{% block content %}
+<body class="bg-gray-100">
+
+    <div class="max-w-3xl mx-auto p-8 bg-white rounded-md shadow-md flex flex-col md:flex-row m-6">
+        
+        <div class="md:pr-8 md:w-1/2">
+            <img id="mainImage" src="{{ product.img1.url }}" alt="Product Image" class="rounded-md shadow-md w-full h-auto mb-4 md:h-96 md:w-96 md:mb-0">
+        
+            <div class="flex mt-4 md:mt-0">
+                <img onclick="changeImage('{{ product.img1.url }}')" src="{{ product.img1.url }}" alt="Small Image 1" class="rounded-md shadow-md m-3 ml-0 w-16 h-20 md:w-20 md:h-24">
+        
+                {% if product.img2 %}
+                    <img onclick="changeImage('{{ product.img2.url }}')" src="{{ product.img2.url }}" alt="Small Image 2" class="rounded-md shadow-md m-3 w-16 h-20 md:w-20 md:h-24">
+                {% endif %}
+        
+                {% if product.img3 %}
+                    <img onclick="changeImage('{{ product.img3.url }}')" src="{{ product.img3.url }}" alt="Small Image 3" class="rounded-md shadow-md m-3 w-16 h-20 md:w-20 md:h-24">
+                {% endif %}
+            </div>
+        </div>
+        
+
+        <div class="p-6 md:w-1/2">
+            <h2 class="text-2xl font-semibold text-black  mb-4">{{ product.productname }}</h2>
+
+            <p class="text-gray-600 font-semibold">Category: {{product.category}}</p>
+
+            <p class="text-xl text-yellow-900 font-bold mb-4">{{product.price}}</p>
+            {% if product.stock <= 5 %}
+                <p class="text-green-700 mb-4 font-semibold">In Stock: {{ product.stock }}</p>
+            {% endif %}
+
+            <p class="text-black text-md mb-4 font-semibold">Product Details :</p>
+            <p class="text-black text-sm mb-4">{{ product.details }}</p>
+
+            <div class="flex items-center space-x-2 mt-4 md:mt-10">
+                <button class="px-5 py-2 bg-yellow-900 text-white rounded-md font-semibold "><a href="{% url 'add_to_cart' product.id %}">Add to Cart</a></button>
+                <button class="px-3 py-2 border border-black text-black rounded-md font-semibold hover:bg-yellow-900 hover:text-white">Wishlist <i class="fa-regular fa-heart"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-3xl mx-auto p-8 bg-white rounded-md shadow-md m-6">
+        <p class="text-black mb-4 font-semibold">Description:</p>
+        <p class="text-gray-600 leading-relaxed mb-6" style="word-wrap: break-word;">
+            {{ product.description|linebreaks }}
+        </p>
+    </div>
+
+    <script>
+        function changeImage(newImageUrl) {
+            document.getElementById('mainImage').src = newImageUrl;
+        }
+    </script>
+
+</body>
+{% endblock content %}
