@@ -166,3 +166,6 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
+
+KEY = 'rzp_test_uxJYg29NA4iFLt'
+SECRET = 'l7lYgiPEXWEZZwGasNxSKL7n'

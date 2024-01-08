@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %} Wallet {% endblock title %}
+{% block content %}
+{% include 'profile.html' %}
+
+{% if coupons %}
+{% for coupon in coupons %}
+<div class="container mx-auto mt-8">
+    <div class="bg-yellow-100 p-4 rounded-md shadow-md w-3/4" >
+        <h2 class="text-2xl font-bold mb-4">Coupon Details</h2>
+
+        <!-- Coupon information -->
+        <div class="mb-4">
+            <p class="text-md">Coupon Code:</strong> {{ coupon.code }}</p>
+            <p class="text-md">Discount:</strong> {{ coupon.dis_per }}%</p>
+            <p class="text-md">Minimum Amount:</strong> ${{ coupon.minimum_amount }}</p>
+            <p class="text-md">Valid Until:</strong> {{ coupon.valid_until }}</p>
+        </div>
+</div>
+</div>
+{% endfor %}
+{% endif %}
+{% endblock content %}

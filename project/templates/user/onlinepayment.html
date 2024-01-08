@@ -1,0 +1,40 @@
+{% extends 'payment.html' %}
+{% block title %} Online Payment {% endblock title %}
+{% block content %}
+<body>
+    <div class="bg-yellow-100 shadow-md m-5 mt-10 text-center flex flex-col justify-center items-center" style="height: 150px; width: 400px;">
+            <h5 class="font-semibold">Online Payment</h5>
+            <button id="razorpay-payment-button" class="bg-yellow-900 px-5 h-10 rounded-md mt-5 text-xl text-white">Pay with Razorpay</button>
+    </div>
+    
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var options = {
+        key: '{{ rzp_test_uxJYg29NA4iFLt }}',
+        amount: '{{ clnt_order.amount }}',
+        currency: '{{ clnt_order.currency }}',
+        name: 'Tiara',
+        description: 'Payment for your order',
+        order_id: '{{ clnt_order.id }}',
+        handler: function (response){
+            // Handle the success or failure here
+            console.log(response);
+            if (response.razorpay_payment_id) {
+                window.location.href = '{% url "order_confirmation" order_id=order.id %}?transaction_id=' + response.razorpay_payment_id;
+                } else {
+                alert('Payment failed. Please try again.');
+                }
+        }
+    };
+    var rzp = new Razorpay(options);
+
+    document.getElementById('razorpay-payment-button').onclick = function(){
+        rzp.open();
+    }
+</script>
+</body>
+    
+
+
+{% endblock content %}

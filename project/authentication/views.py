@@ -12,14 +12,16 @@ from django.core.mail import send_mail
 from django.conf import settings
 from adminapp.models import *
 from django.shortcuts import render, get_object_or_404
+from cart.models import *
 
+from userdetails.models import Wishlist, Wallet
 
 def home(request):
     categories=Category.objects.all()
-    return render(request,'user/Home.html',{'categories': categories})
-
-
-
+    cartitem=CartItem.objects.count()
+    wishlist=Wishlist.objects.count()
+    print(wishlist)
+    return render(request,'user/Home.html',{'categories': categories, 'wishlist':wishlist, 'cartitem':cartitem})
 
 def signin(request):
     if request.user.is_authenticated:
@@ -39,10 +41,12 @@ def signin(request):
 
             if user is not None and user.is_verified==True and user.is_active==True:
                 login(request, user)
-        
-                return redirect('home')
+            
             else:
                 messages.error(request,'Incorrect Username or Password')
+            
+            return redirect('login')
+            
         
         except Custom_user.DoesNotExist:
             messages.error(request, 'Email not registered')
@@ -84,8 +88,9 @@ def signup(request):
         
         user.set_password(password)
         user.save()
+        Wallet.objects.create(user=user, balance=0)
 
-        messages.success(request, 'Saved successfully')
+       
         return redirect('verification', email=email)
 
     return render(request, 'user/signup.html')
@@ -136,7 +141,7 @@ def verification(request, email):
             if otp_entered==str(user.otp):
                 user.is_verified=True
                 user.save()
-                messages.success(request,"Otp verified succesfully")
+                messages.success(request,"Account created succesfully")
                 return redirect('login')
             else:
                 messages.error(request,"Otp is Inccorect")
@@ -174,7 +179,7 @@ def otp_verify(request, email):
             if otp_entered == str(user.otp):
                 user.is_verified = True
                 user.save()
-                messages.success(request, "Otp verified successfully")
+                messages.success(request, "Password reset successfully")
                 return redirect('resetpassword', email=user.email)
             else:
                 messages.error(request, "Otp is incorrect")
@@ -208,13 +213,32 @@ def signout(request):
 
 def products(request):
     products=Product.objects.all()
+    
+    order_by = request.GET.get('order_by', 'default')
+    if order_by == 'low_to_high':
+        products = products.order_by('price')
+    elif order_by == 'high_to_low':
+        products = products.order_by('-price')
     return render(request,'user/products.html',{'products':products})
 
 def product_details(request,id):
     product=Product.objects.get(id=id)
-    return render(request,'user/productdetails.html',{'product':product})
+    variants=Varient_color.objects.all()
+    request.session['product_id'] = product.id
+    return render(request,'user/productdetails.html',{'product':product , 'variants':variants})
 
 def category_product(request, id):
     categories = Category.objects.get(id=id)
     products = Product.objects.filter(category=categories, active=True)
     return render(request, 'user/categories.html', {'categories': categories, 'products': products})
+
+
+def search(request):
+    if request.POST.get('search'):
+        search=request.POST.get('search')
+        if search:
+       
+            products = Product.objects.filter(productname__icontains=search)
+
+            return render(request, 'user/products.html', {'products': products})
+    return redirect('home')

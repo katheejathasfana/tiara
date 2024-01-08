@@ -5,6 +5,16 @@
 
 <img src="{% static 'images/banner2.webp' %}" style="height: 400px; width: 100%;">
 <div class=" overflow-x-auto">
+  <div class="flex justify-end m-4">
+    <form method="get" action="{% url 'products' %}">
+        <label for="order_by">Sort by:</label>
+        <select name="order_by" id="order_by" onchange="this.form.submit()">
+            <option value="default" {% if request.GET.order_by == 'default' %}selected{% endif %}>Default</option>
+            <option value="low_to_high" {% if request.GET.order_by == 'low_to_high' %}selected{% endif %}>Price: Low to High</option>
+            <option value="high_to_low" {% if request.GET.order_by == 'high_to_low' %}selected{% endif %}>Price: High to Low</option>
+        </select>
+    </form>
+</div>
 
   
 <div class="flex flex-wrap justify-center">
@@ -12,7 +22,18 @@
     {% for product in products %}
     <a href="{% url 'product_details' product.id %}">
       <div class="m-10  max-w-xs overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md transition-transform transform hover:scale-105" style="width: 200px; height: 350px;">
-        <img class="object-cover" src="{{ product.img1.url }}" alt="product image" style="height: 200px; width: 200px; align-items: center;"/>
+        <div class="relative">
+       <img class="object-cover" src="{{ product.img1.url }}" alt="product image" style="height: 200px; width: 200px; align-items: center;" />
+       <div class="absolute top-0 right-0">
+        {% if product in request.user.wishlist.products.all %}
+            <!-- Product is in the wishlist -->
+            <i class="far fa-heart text-2xl m-2 text-red-800"></i>
+        {% else %}
+            <!-- Product is not in the wishlist -->
+            <i class="fa-regular fa-heart text-white text-2xl m-2"></i>
+        {% endif %}
+    </div>
+    </div>
         <div class="mt-4 pb-5">
           <div class="flex justify-center", style="height: 50px; width: 100%;">
         
@@ -34,5 +55,6 @@
     </a>
     {% endfor %}
   {% endif %}
+</div>
 </div>
 {% endblock content %}

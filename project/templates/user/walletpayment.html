@@ -1,0 +1,21 @@
+{% extends 'payment.html' %}
+{% block content %}
+<body>
+<div class="bg-yellow-100 shadow-md m-5 mt-10 text-center flex flex-col justify-center items-center" style="height: 150px; width: 400px;">
+    <form method="post" action="{% url 'paywallet' %}">
+        {% csrf_token %}
+        {% if messages %}
+        {% for message in messages %}
+        {{message}}
+        {% endfor %}
+        {% endif %}
+        <input type="hidden" name="order_id" value="{{ order.id }}">
+        <h5 class="font-semibold">Pay with your wallet </h5>
+        <button class="bg-yellow-900 px-5 h-10 rounded-md mt-5 text-xl text-white">confirm payment</button>
+    </form>
+</div>
+
+
+{% endblock content %}
+
+</body>

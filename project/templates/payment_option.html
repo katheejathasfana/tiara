@@ -6,17 +6,27 @@
       <div class="flex-grow">
         <div class="m-2">
           <ul class="space">
-            <li class="border-b border-border-gray-300 text-black rounded-md font-semibold  ">
-              <a href="#" class=" block text-black py-2 px-4 bg-yellow-900  text-white rounded-lg ">
+            <li class="border-b border-border-gray-300 pb-2 text-black ">
+              <a href="{% url 'cod' address.id %}" class="block py-2 px-4 ">
                 <h2 class="text-xl font-semibold mt-5">Cash On Delivery</h2>
                 <p class="text-sm text-gray-600">Pay at your doorstep</p>
               </a>
             </li>
+          
+            <li class="border-b border-border-gray-300 pb-2 text-black">
+              <a href="{% url 'onlinepayment' address.id %}" class="block py-2 px-4 hover:bg-yellow-900 focus:bg-yellow-900 focus:text-white focus:rounded-lg hover:rounded-lg hover:text-white">
+                <h2 class="text-xl font-semibold mt-5">Razorpay</h2>
+                <p class="text-sm text-gray-600">Pay with RazorpayPayments</p>
+              </a>
+            </li>
+          
 
-            <li class="border-b border-border-gray-300 pb-2 text-black ">
-              <a href="#" class="block py-2 px-4 hover:bg-yellow-900 focus:bg-yellow-900 focus:text-white focus:rounded-lg hover:rounded-lg hover: text-white">
-                <h2 class="text-xl font-semibold mt-5">UPI Payment</h2>
-                <p class="text-sm text-gray-600">G-pay, Paytm, PhonePe & more</p>
+            <li class="border-b border-border-gray-300 pb-2 text-black">
+              <a href="{% url 'wallet_payment' address.id %}" class="block py-2 px-4 hover:bg-yellow-900 focus:bg-yellow-900 focus:text-white focus:rounded-lg hover:rounded-lg hover:text-white">
+                <h2 class="text-xl font-semibold mt-5">Wallet</h2>
+                <p class="text-sm text-gray-600">Pay with Wallet</p>
+              </a>
+                
               </a>
             </li>
 

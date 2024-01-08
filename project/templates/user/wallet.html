@@ -1,0 +1,47 @@
+  {% extends 'base.html' %}
+  {% block title %} Wallet {% endblock title %}
+  {% block content %}
+  {% include 'profile.html' %}
+
+  {% if wallets %}
+ 
+  <div class="container mx-auto mt-8">
+    <h2 class="text-2xl font-bold mb-4">My Wallet</h2>
+
+    <div class="bg-yellow-100 p-4 rounded-md shadow-md max-w-screen-md" >
+  
+
+  <p class="text-lg mb-2 font-semibold">Current Balance: Rs {{wallets.balance }}</p>
+
+ 
+
+
+  {% endif %}
+</div>
+  <h1 class="text-lg font-semibold">Wallet Transactions</h1>
+   
+            {% for transaction in transactions %}
+            <div class="w-3/4 m-5 bg-gray-100 font-semibold shadow-md flex justify-between">
+              <div>
+              <p class="ml-5">{{ transaction.timestamp }}</p>
+              <p class="font-semibold ml-5 ">{{ transaction.transaction_type }}</p>
+            </div>
+            <div class="flex items-center m-3 space-x-4">
+                  <p class="text-xl font-semibold ">{{ transaction.amount }}</p>
+                  <br>
+                  {% if transaction.transaction_type == 'debit' %}
+                      <p class="text-red-500 ml-2 font-semibold">Debited</p>
+                  {% else %}
+                      <p class="text-green-500 ml-2 font-semibold">Credited</p>
+                  {% endif %}
+              </div>
+          </div>
+          
+          
+        
+            {% endfor %}
+        </tbody>
+    </table>
+  </div>
+</div>
+  {% endblock content%}

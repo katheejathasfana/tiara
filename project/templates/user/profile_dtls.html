@@ -37,15 +37,18 @@
         <h2 class="text-black font-semibold"> Date of Birth</h2>
         <h2 class="text-black font-semibold">{{user.date_of_birth }} </h2>
     </div>
-    <div class="">
+    <div class="mb-2 flex justify-between">
         <h2 class="text-black font-semibold"> Address</h2>
+        <button class="text-black font-semibold  border border-gray-500 px-3 py-1 rounded-lg" id="addAddressBtn" data-modal-target="popup-modal" data-modal-toggle="popup-modal"
+        class="block text-black font-semibold py-2" type="button"">Add address</button>
+        </div>
         {% if user.addresses %}
         <div class="flex space-x-4">
             {% for i in user.addresses.all %}
             <div class="bg-yellow-100 px-4 py-4 h-auto m-5" style="width:300px">
                 <div class="flex items-center space-x-4 align-items: flex-end">
-                    <a href="{% url 'get_address' i.id %}"><i class="fa fa-edit block text-black" type="button"></i></a>
-                    <a href="{% url 'remove_address' i.id %}"><i class="fa fa-trash"></i></a>
+                    <a href="{% url 'get_address' i.id %}?source=profile"><i class="fa fa-edit block text-black" type="button"></i></a>
+                    <a href="{% url 'remove_address' i.id %}?source=profile"><i class="fa fa-trash"></i></a>
                 </div>
 
             <p>{{i.full_name }}</p>
@@ -62,5 +65,82 @@
     {% endif %}
     </div>
    
+</div>
+
+
+
+<div id="popup-modal" tabindex="-1"
+class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+<div class="relative p-4 w-full max-w-md max-h-full">
+    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <button type="button"
+            class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            data-modal-hide="popup-modal">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+            </svg>
+            <span class="sr-only">Close modal</span>
+        </button>
+
+        <div class="max-w-md mx-auto bg-white p-8 border rounded-md shadow-md">
+            <h2 class="text-2xl font-bold mb-4">Add Address</h2>
+
+            
+           
+            <form action="{% url 'add_address' %}?source=profile" method="POST">
+                {% csrf_token %}
+
+                <!-- Name -->
+                <div class="mb-4">
+                    <label for="name" class="block text-sm font-medium text-gray-600">Full Name</label>
+                    <input type="text" id="name" name="name"
+                        class="mt-1 p-2 border rounded-md w-full" required />
+                </div>
+
+                <!-- Street Address -->
+                <div class="mb-4">
+                    <label for="address" class="block text-sm font-medium text-gray-600">Address</label>
+                    <input type="text" id="address" name="address"
+                        class="mt-1 p-2 border rounded-md w-full" required />
+                </div>
+
+                <!-- City and Zip Code -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="mb-4">
+                        <label for="city" class="block text-sm font-medium text-gray-600">City</label>
+                        <input type="text" id="city" name="city"
+                            class="mt-1 p-2 border rounded-md w-full" required />
+                    </div>
+                    <div class="mb-4">
+                        <label for="zip" class="block text-sm font-medium text-gray-600">Zip Code</label>
+                        <input type="text" id="zip" name="zip"
+                            class="mt-1 p-2 border rounded-md w-full" required />
+                    </div>
+                </div>
+
+                <!-- Country -->
+                <div class="mb-4">
+                    <label for="country" class="block text-sm font-medium text-gray-600">Country</label>
+                    <input type="text" id="country" name="country"
+                        class="mt-1 p-2 border rounded-md w-full" required />
+                </div>
+
+                <div class="mb-4">
+                    <label for="phone" class="block text-sm font-medium text-gray-600">Phone Number</label>
+                    <input type="text" id="phone" name="phone" 
+                        class="mt-1 p-2 border rounded-md w-full" required />
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="bg-yellow-900 text-white px-4 py-2 rounded-md ">
+                    Save Address
+                </button>
+            </form>
+            
+        </div>
+    </div>
+</div>
 </div>
 {% endblock content %}

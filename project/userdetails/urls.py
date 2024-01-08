@@ -12,4 +12,11 @@ urlpatterns = [
     path('order_details/<int:order_id>/', views.order_details, name="order_details"),
     
 
+    path('wishlist/', views.wishlist, name="wishlist"),
+    path('add_wishlist/<int:product_id>/', views.addwishlist, name="addwishlist"),
+    path('remove_wishlist/<int:product_id>/', views.removewishlist, name="removewishlist"),
+
+    path('wallet/',views.wallet, name="wallet"),
+    path('coupon/',views.coupon, name="coupon")
+
 ]

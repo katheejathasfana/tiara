@@ -18,10 +18,12 @@
                     <p class="text-sm font-semibold">Order Number</p>
                     <p class="text-md font-semibold">#Tiara00000{{ order.id }}</p>
                     <p class="text-md font-semibold">Placed:{{ order.order_date }}</p>
+                    
+                    
                 </div>
                 <div>
                   
-                
+                    <p class="text-sm font-semibold text-center">Payment Status :{{ order.get_payment_status_display }}</p>
                     <p class="text-sm font-semibold text-center">Total Amount <br>{{ order.Grand_total }}</p>
                 </div>
             </div>
@@ -104,7 +106,7 @@
               <p class="text-sm font-semibold mt-1">{{order.payment_method}}</p>
               
               <p class="text-sm font-semibold mt-1">Rs {{order.total_amount}}</p>
-              <p class="text-sm font-semibold mt-1">Rs 0</p>
+              <p class="text-sm font-semibold mt-1">Rs {{order.discount}}</p>
               <p class="text-sm font-semibold mt-1">Rs {{order.shipping_charge}}</p>
               <p class="text-md font-semibold mt-1">Rs {{order.Grand_total}}</p>
             </div>

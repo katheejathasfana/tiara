@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <title>Document</title>
 </head>
 <body>
@@ -18,22 +19,26 @@
         <!-- Your checkout summary content goes here -->
         <div class="mb-2 flex justify-between">
             <h2 class="text-black font-semibold"> Bag</h2>
-            <h2 class="text-black font-semibold">{{total_quantity }} Items</h2>
+            <h2 class="text-black font-semibold">{{cart.total_quantity }} Items</h2>
         </div>
         
         <div class="mb-2 flex justify-between">
             <p class="text-gray-700">Subtotal</p>
-            <p class="text-gray-700">{{total}}</p>
+            <p class="text-gray-700">{{cart.total}}</p>
+        </div>
+        <div class="mb-2 flex justify-between">
+            <p class="text-gray-700">Discount</p>
+            <p class="text-gray-700">{{cart.discnt}}</p>
         </div>
         <div class="flex justify-between">
             <p class="text-gray-700">Shipping</p>
-            <p class="text-gray-700">49.00</p>
+            <p class="text-gray-700">{{cart.shipping_charge}}</p>
         </div>
         <hr class="my-4" />
         <div class="flex justify-between">
             <p class="text-lg font-bold">Total</p>
             
-                <p class=" text-lg font-bold">{{ Grand_total}}</p>
+                <p class=" text-lg font-bold">{{ cart.grand_total}}</p>
             </div>
                
             

@@ -6,8 +6,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Update Products</title>
 </head>
-<body>
-    <div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-md shadow-md">
+<body class="bg-yellow-50">
+    <div class="max-w-md mx-auto mt-10 p-6 bg-white  rounded-md shadow-md">
         <h2 class="text-2xl font-semibold text-gray-800 mb-6">Update Product</h2>
         
         <form action="{% url 'update_product' product.id %}" method="POST" enctype="multipart/form-data">
@@ -29,17 +29,22 @@
           </div>
 
           <div class="mb-4">
-            <label for="categoory" class="block text-sm font-medium text-gray-600">Category</label>
+            <label for="category" class="block text-sm font-medium text-gray-600">Category</label>
             <select
-            id="category"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-            name="category" value="{{product.category}}">
-            
-            {% for category in categories %} {% if category.active %}
-            <option value="{{ category.id }}">{{ category.name }}</option>
-            {% endif %} {% endfor %}
-        </select>
+                id="category"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                name="category">
+                
+                {% for category in categories %}
+                    {% if category.active %}
+                        <option value="{{ category.id }}" {% if category.id == product.category.id %}selected{% endif %}>
+                            {{ category.name }}
+                        </option>
+                    {% endif %}
+                {% endfor %}
+            </select>
         </div>
+        
           
           <div class="mb-4">
             <label for="price" class="block text-sm font-medium text-gray-600">Price</label>

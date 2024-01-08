@@ -50,18 +50,22 @@
                 <div class="bg-white p-6 rounded-lg border shadow-md">
                 <div class="mb-2 flex justify-between">
                     <p class="text-gray-700">Subtotal</p>
-                    <p class="text-gray-700">{{total}}</p>
+                    <p class="text-gray-700">{{cart.total}}</p>
+                </div>
+                <div class="flex justify-between">
+                    <p class="text-gray-700">Discount</p>
+                    <p class="text-gray-700">{{cart.discnt}}</p>
                 </div>
                 <div class="flex justify-between">
                     <p class="text-gray-700">Shipping</p>
-                    <p class="text-gray-700">49.00</p>
+                    <p class="text-gray-700">{{cart.shipping_charge}}</p>
                 </div>
                 <hr class="my-4" />
                 <div class="flex justify-between">
                     <p class="text-lg font-bold">Total</p>
-                    <p class="text-lg font-bold">{{ Grand_total}}</p>
+                    <p class="text-lg font-bold">{{cart.grand_total}}</p>
                 </div>
-                <p class="text-sm text-gray-700">including VAT</p>
+                <p class="text-sm text-gray-700">including GST</p>
                 <a href="{% url 'address' %}">
                     <button class="mt-6 w-full rounded-md bg-yellow-900 py-1.5 font-medium text-white">Check out</button>
                 </a>

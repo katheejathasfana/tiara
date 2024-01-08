@@ -113,9 +113,9 @@ def delete_category(request,id):
 @login_required(login_url='admin_login')
 def product(request):
     products=Product.objects.all()
-    
+    variants=Varient_color.objects.all()
     category=Category.objects.all()
-    return render(request,'admin/product.html',{'products':products , 'categories':category} )
+    return render(request,'admin/product.html',{'products':products , 'categories':category, 'variants':variants} )
 
 def product_active(request,id):
     if request.method=='POST':
@@ -140,6 +140,8 @@ def add_product(request):
         img3=request.FILES.get("img3")
         img4=request.FILES.get("img4")
         description=request.POST.get("description")
+        variant = request.POST.get('variant')
+   
 
         if not name or not price or not category or not stock or not img1:
             messages.error(request, "Please fill in all required fields")
@@ -152,7 +154,7 @@ def add_product(request):
         messages.error(request, "Please enter valid numbers for price and stock.")
         return redirect('add_product')
 
-    product=Product.objects.create(productname=name,category_id=category,price=price,stock=stock,details=details,img1=img1,img2=img2,img3=img3,img4=img4,description=description)
+    product=Product.objects.create(productname=name,category_id=category,price=price,stock=stock,details=details,img1=img1,img2=img2,img3=img3,img4=img4,description=description, varient_id=variant)
     product.save()
     return redirect('product')
     
@@ -213,8 +215,10 @@ def order(request):
     return render(request ,'admin/order.html',{'orders': orders})
 @login_required(login_url='admin_login')
 def order_view(request,id):
+    transaction= request.GET.get('transaction_id')
+    print(transaction)
     order=Order.objects.get(id=id)
-    return render(request, 'admin/order_view.html', {'order':order})
+    return render(request, 'admin/order_view.html', {'order':order, 'transaction':transaction})
     
 @login_required(login_url='admin_login')
 def change_order_status(request, order_id):
@@ -226,3 +230,37 @@ def change_order_status(request, order_id):
         order.save()
         return redirect('orders') 
     return render(request, 'admin/order.html', {'order': order})
+
+def variant(request):
+    variants=Varient_color.objects.all()
+    return render(request,'admin/variant.html',{'variants': variants})
+
+def add_variant(request):
+    if request.method=='POST':
+        name=request.POST.get("name")
+        Varient_color.objects.create(name=name).save()
+        return redirect('variant')
+
+def delete_variant(request,id):
+    varient=Varient_color.objects.get(id=id)
+    varient.delete()
+    return redirect('variant')
+
+
+def coupons(request):
+    coupons=Coupon.objects.all()
+    return render(request,'admin/coupon.html',{'coupons':coupons})
+
+def add_coupon(request):
+    if request.method=='POST':
+        
+        code=request.POST.get('code')
+        price=request.POST.get('price')
+        min_amount=request.POST.get('min')
+        coupon=Coupon.objects.create(code=code, dis_per=price,minimum_amount=min_amount)
+        return redirect('coupons')
+    
+def delete_coupon(request,id):
+    coupon=Coupon.objects.get(id=id)
+    coupon.delete()
+    return redirect('coupons')
