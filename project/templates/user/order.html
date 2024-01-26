@@ -34,7 +34,7 @@
             
               <div style="white-space: nowrap; overflow-x: auto;">
                 {% for order_item in order.orders.all %}
-                    <img src="{{ order_item.product.img1.url }}" alt="product-image" class="rounded-lg sm:w-40" style="height:100px; width:100px; display: inline-block; margin-right: 10px;" />
+                    <img src="{{ order_item.variant.img1.url }}" alt="product-image" class="rounded-lg sm:w-40" style="height:100px; width:100px; display: inline-block; margin-right: 10px;" />
                 {% endfor %}
             </div>
             </div>

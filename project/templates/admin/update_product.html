@@ -44,66 +44,35 @@
                 {% endfor %}
             </select>
         </div>
+        <div class="col-span-2 sm:col-span-1">
+          <label
+              for="offer"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Offer</label
+          >
+          <input
+              type="number"
+              name="offer"
+              id="offer"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 " oninput="this.value = this.value.slice(0, 3)" value="{{ product.offer.discount_prcnt}}"
+          />
+      </div>
+      <div class="col-span-2 sm:col-span-1">
+          <label
+              for="expire"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Expire Date</label
+          >
+          <input
+              type="date"
+              name="expire"
+              id="expire"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{ product.offer.expire_date}}"
+              
+              
+          />
+      </div>
         
-          
-          <div class="mb-4">
-            <label for="price" class="block text-sm font-medium text-gray-600">Price</label>
-            <input type="text" id="price" name="price" class="mt-1 p-2 w-full border rounded-md" value="{{product.price}}">
-          </div>
-          <div class="mb-4">
-            <label for="stock" class="block text-sm font-medium text-gray-600">Stock</label>
-            <input type="text" id="stock" name="stock" class="mt-1 p-2 w-full border rounded-md" value="{{product.stock}}">
-        </div>
-        
-        <div class="mb-4">
-            <label for="image1" class="block text-sm font-medium text-gray-600">Image1</label>
-        
-            {% if product.img1 %}
-                <img src="{{ product.img1.url }}" alt="Current Image1" class="mb-2 border rounded-md">
-            {% endif %}
-        
-            <input type="file" id="img1" name="img1" class="mt-1 p-2 w-full border rounded-md">
-            <p class="mt-2 text-sm text-gray-500">Upload a new image for Image1 (leave blank to keep the current image).</p>
-        </div>
-        
-         
-          <div class="mb-4">
-            <label for="image2" class="block text-sm font-medium text-gray-600">Image2</label>
-        
-            <!-- Display current image if it exists -->
-            {% if product.img2 %}
-                <img src="{{ product.img2.url }}" alt="Current Image2" class="mb-2 border rounded-md">
-            {% endif %}
-        
-            <input type="file" id="img2" name="img2" class="mt-1 p-2 w-full border rounded-md">
-            <p class="mt-2 text-sm text-gray-500">Upload a new image for Image4 (leave blank to keep the current image).</p>
-        </div>
-         
-          <div class="mb-4">
-            <label for="image3" class="block text-sm font-medium text-gray-600">Image3</label>
-        
-            <!-- Display current image if it exists -->
-            {% if product.img3 %}
-                <img src="{{ product.img3.url }}" alt="Current Image3" class="mb-2 border rounded-md">
-            {% endif %}
-        
-            <input type="file" id="img3" name="img3" class="mt-1 p-2 w-full border rounded-md">
-            <p class="mt-2 text-sm text-gray-500">Upload a new image for Image4 (leave blank to keep the current image).</p>
-        </div>
-         
-
-          <div class="mb-4">
-            <label for="image4" class="block text-sm font-medium text-gray-600">Image4</label>
-        
-            <!-- Display current image if it exists -->
-            {% if product.img4 %}
-                <img src="{{ product.img4.url }}" alt="Current Image4" class="mb-2 border rounded-md">
-            {% endif %}
-        
-            <input type="file" id="img4" name="img4" class="mt-1 p-2 w-full border rounded-md">
-            <p class="mt-2 text-sm text-gray-500">Upload a new image for Image4 (leave blank to keep the current image).</p>
-        </div>
-
         <div class="mb-4">
           <label for="description" class="block text-sm font-medium text-gray-600">Description</label>
           <textarea id="description" name="description" class="mt-1 p-2 w-full border rounded-md">{{product.description}}</textarea>

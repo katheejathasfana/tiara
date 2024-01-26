@@ -13,10 +13,12 @@ urlpatterns = [
     
 
     path('wishlist/', views.wishlist, name="wishlist"),
-    path('add_wishlist/<int:product_id>/', views.addwishlist, name="addwishlist"),
+    path('add_wishlist/<int:variant_id>/', views.addwishlist, name="addwishlist"),
     path('remove_wishlist/<int:product_id>/', views.removewishlist, name="removewishlist"),
 
     path('wallet/',views.wallet, name="wallet"),
-    path('coupon/',views.coupon, name="coupon")
+    path('coupon/',views.coupon, name="coupon"),
+
+    path('invoice/<int:id>/', views.invoice, name='invoice'),
 
 ]

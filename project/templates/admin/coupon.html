@@ -57,33 +57,20 @@
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                     placeholder="Type Coupon code" />
                                             </div>
-                                            <label for="type">Coupon Type:</label>
-                                                     <select name="type">
-                                                <option value="first_order">First Order</option>
-                                                <option value="purchase_above_1000">Purchase Above 1000</option>
-                                                <option value="purchase_above_2000">Purchase Above 2000</option>
-        
-                                            </select>
+                                           
                                             <div class="col-span-2">
                                                 <label for="Discount price"
-                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                                                <input type="text" name="price" id="price"
+                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Discount Percentage</label>
+                                                <input type="number" name="percentage" id="percentage"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                     placeholder="Discount percentage" />
                                             </div>
-                                            <div class="col-span-2">
-                                                <label for="expired"
-                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Valid
-                                                    or not</label>
-                                                <input type="text" name="is_expired" id="is_expired"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                    placeholder="valid or not" />
-                                            </div>
+                                            
                                             <div class="col-span-2">
                                                 <label for="minimum amount"
                                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mininmum
                                                     Amount</label>
-                                                <input type="text" name="min" id="min_ammount"
+                                                <input type="number" name="min" id="min_ammount"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                     placeholder="Enter the Minimum Amount" />
                                             </div>
@@ -102,19 +89,26 @@
                                 </div>
                             </div>
                         </div>
-
+                        {% if messages %}
+                        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4" role="alert">
+                          <p class="font-bold">Alert!</p>
+                          {% for message in messages %}
+                            {{ message }}
+                          {% endfor %}
+                        </div>
+                      {% endif %}
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">Id</th>
                                     <th scope="col" class="px-6 py-3">Code</th>
-                                    <th scope="col" class="px-6 py-3">Type</th>
+                                    
                                     <th scope="col" class="px-6 py-3">Discount Percentage</th>
 
-                                    <th scope="col" class="px-6 py-3">Coupon Valid</th>
+                                    
 
                                     <th scope="col" class="px-6 py-3">Minimum Amount</th>
-                                    <th scope="col" class="px-6 py-3">Delete</th>
+                                    <th scope="col" class="px-6 py-3">Active/Deactive</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -125,12 +119,29 @@
                                         {{coupon.id}}
                                     </td>
                                     <td class="px-6 py-4">{{coupon.code}}</td>
-                                    <td class="px-6 py-4">{{coupon.type}}</td>
+                                    
                                     <td class="px-6 py-4">{{coupon.dis_per}}</td>
-                                    <td class="px-6 py-4">{{coupon.is_expired}}</td>
+                                    
                                     <td class="px-6 py-4">{{coupon.minimum_amount}}</td>
                         
-                                    <td class="px-6 py-4"><a href="{% url 'deletecoupon' coupon.id %}"<i class="fa-solid fa-trash text-black"></i></td>
+                                    <td class="px-6 py-4">
+                                        {% if coupon.active %}
+                                        <form action="{% url 'coupon_active' coupon.id %}" method="post">
+                                            {% csrf_token %}
+                                            <button class="bg-green-800 text-white font-semiboldpy-2 px-4 rounded-full">
+                                                Active
+                                            </button>
+                                        </form>
+                                        {% else %}
+                                        <form action="{% url 'coupon_active' coupon.id %}" method="post">
+                                            {% csrf_token %}
+                                            <button class="bg-red-600 text-white font-semiboldpy-2 px-4 rounded-full">
+                                                Block
+                                            </button>
+                                        </form>
+                                        {% endif %}
+                                    </td>
+
                                 </tr>
                                 {% endfor %} {% endif %}
                             </tbody>
@@ -139,7 +150,7 @@
                 </div>
             </div>
         </div>
-        <label </main>
+        <label> </main>
 
             <script>
                 document.addEventListener("DOMContentLoaded", function () {

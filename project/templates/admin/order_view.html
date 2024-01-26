@@ -24,12 +24,12 @@
             
             <div class="m-5  ">
             <p class="text-lg font-semibold ">Shipping Address</p>
-              <p class="text-sm font-semibold">{{order.address.full_name}}</p>
-              <p class="text-sm font-semibold">{{order.address.address}}  {{order.address.city }}</p>
+              <p class="text-sm font-semibold">{{order.shipping_address.full_name}}</p>
+              <p class="text-sm font-semibold">{{order.shipping_address.address}}  {{order.address.city }}</p>
          
-              <p class="text-sm font-semibold">{{order.address.country}}- {{order.address.pincode}}</p>
+              <p class="text-sm font-semibold">{{order.shipping_address.country}}- {{order.address.pincode}}</p>
          
-              <p class="text-sm font-semibold">{{order.address.phone_No}}</p>
+              <p class="text-sm font-semibold">{{order.shipping_address.phone_No}}</p>
           </div>
           <hr>
 
@@ -68,11 +68,12 @@
                   </div>
                         <div class="m-4 flex justify-between">
                           <div>
-                        <img src="{{ order_item.product.img1.url }}" alt="product-image" class="rounded-lg sm:w-40" style="height:100px; width:100px;" />
+                        <img src="{{ order_item.variant.img1.url }}" alt="product-image" class="arounded-lg sm:w-40" style="height:100px; width:100px;" />
                         <p>Qty: {{ order_item.quantity }}</p>
                       </div>
                       <div>
-                        <p class=" text-sm font-semibold text-center">Rs {{order_item.product.price}}</p>
+                        <p class=" text-sm font-semibold text-center">Rs {{order_item.variant.discount_price}}</p>
+                        <p class=" text-sm font-semibold  line-through text-center">Rs {{order_item.variant.price}}</p>
                       </div>
                     
 
@@ -98,7 +99,7 @@
               <p class="text-sm font-semibold mt-1">{{order.payment_method}}</p>
               
               <p class="text-sm font-semibold mt-1">Rs {{order.total_amount}}</p>
-              <p class="text-sm font-semibold mt-1">Rs 0</p>
+              <p class="text-sm font-semibold mt-1">Rs {{order.discount}}</p>
               <p class="text-sm font-semibold mt-1">Rs {{order.shipping_charge}}</p>
               <p class="text-md font-semibold mt-1">Rs {{order.Grand_total}}</p>
             </div>

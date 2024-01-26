@@ -25,18 +25,21 @@
                   
                     <p class="text-sm font-semibold text-center">Payment Status :{{ order.get_payment_status_display }}</p>
                     <p class="text-sm font-semibold text-center">Total Amount <br>{{ order.Grand_total }}</p>
+                    <div class="">
+                    <button class="px-2 py-1 border border-gray-700 text-center rounded-lg font-semibold "><a href="{% url 'invoice' order.id %}" target="_blank"> Invoice</a></button>
+                    </div>
                 </div>
             </div>
             <hr>
             
             <div class="m-5  ">
             <p class="text-lg font-semibold ">Shipping Address</p>
-              <p class="text-sm font-semibold">{{order.address.full_name}}</p>
-              <p class="text-sm font-semibold">{{order.address.address}}  {{order.address.city }}</p>
+              <p class="text-sm font-semibold">{{order.shipping_address.full_name}}</p>
+              <p class="text-sm font-semibold">{{order.shipping_address.address}}  {{order.shipping_address.city }}</p>
          
-              <p class="text-sm font-semibold">{{order.address.country}}- {{order.address.pincode}}</p>
+              <p class="text-sm font-semibold">{{order.shipping_address.country}}- {{order.shipping_address.pincode}}</p>
          
-              <p class="text-sm font-semibold">{{order.address.phone_No}}</p>
+              <p class="text-sm font-semibold">{{order.shipping_address.phone_No}}</p>
           </div>
           <hr>
 
@@ -59,18 +62,19 @@
               {% endif %}
           
           
-                        <p> {{ order_item.product.productname }}</p>
+                        <p> {{ order_item.variant.product.productname }}</p>
                       </div>
                    </div>
                   
                   </div>
                         <div class="m-4 flex justify-between">
                           <div>
-                        <img src="{{ order_item.product.img1.url }}" alt="product-image" class="rounded-lg sm:w-40" style="height:100px; width:100px;" />
+                        <img src="{{ order_item.variant.img1.url }}" alt="product-image" class="rounded-lg sm:w-40" style="height:100px; width:100px;" />
                         <p>Qty: {{ order_item.quantity }}</p>
                       </div>
                       <div>
-                        <p class=" text-sm font-semibold text-center">Rs {{order_item.product.price}}</p>
+                        <p class=" text-sm font-semibold text-center">Rs {{order_item.variant.discount_price}}</p>
+                        <span class="text-sm font-semibold text-slate-900 line-through text-center">{{ order_item.variant.price }}</span>
                       </div>
                     
 
@@ -99,6 +103,7 @@
               <p class="text-sm font-semibold mt-1">Discount</p>
               <p class="text-sm font-semibold mt-1">Shipping Charges</p>
               <p class="text-md font-semibold mt-1">Total</p>
+              
             </div>
 
             <div class="m-5">

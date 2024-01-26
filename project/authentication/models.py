@@ -19,6 +19,7 @@ class Custom_user(AbstractBaseUser, PermissionsMixin):
     gender = models.CharField(max_length=10)
     is_staff = models.BooleanField(default=False)  
     pro_pic = models.ImageField(upload_to="User/image/User")
+    referal_code = models.CharField(max_length=12, unique=True, blank=True, null=True)
 
     USERNAME_FIELD = 'email'
 
@@ -26,3 +27,4 @@ class Custom_user(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+

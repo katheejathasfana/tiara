@@ -2,9 +2,7 @@
 {% block title %} Cart {% endblock title %}
 {% block content %}
 <body  style="min-height: 100vh;">
-    
-       
-        <h1 class="mb-10 text-center text-2xl font-bold">Cart Items</h1>
+    <h1 class="mb-10 text-center text-2xl font-bold">Cart Items</h1>
         {% if cartitems %}
         <div class="flex-col justify-between max-full-screen overflow-y-auto p-10">
         <div class="mx-auto max-w-5xl flex flex-col md:flex-row justify-between px-6 xl:px-0">
@@ -15,13 +13,14 @@
                     <div class="mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start relative">
 
                         <a href="{% url 'remove_item' cart.id %}">  <i class="fa-solid fa-xmark absolute top-0 right-0 mt-2 mr-2"> </i> </a>
-                        <img src="{{ cart.product.img1.url }}" alt="product-image" class="rounded-lg sm:w-40" style="height:100px; width:100px;" />
+                        <img src="{{ cart.variant.img1.url }}" alt="product-image" class="rounded-lg sm:w-40" style="height:100px; width:100px;" />
                         <div class="sm:ml-4 sm:flex sm:w-full sm:justify-between">
                             <div class="mt-5 sm:mt-0">
-                                <h2 class="text-lg font-bold text-gray-900">{{ cart.product.productname }}</h2>
+                                <h2 class="text-lg font-bold text-gray-900">{{ cart.variant.product.productname }}</h2>
+                                <h2 class="text-sm font-semibold text-gray-700">{{ cart.variant.color }}</h2>
                             </div>
                             <div class="mt-6 flex justify-between items-center sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
-                                <form method="POST" action="{% url 'update_quantity' cart.id %}">
+                                 <form method="POST" action="{% url 'update_quantity' cart.id %}">
                                     {% csrf_token %}
                                     <div class="flex border-gray-100">
                                         <button type="submit" class="cursor-pointer rounded-l bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50" name="action" value="decrement"> - </button>
@@ -35,9 +34,25 @@
 
                                         <button type="submit" class="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50" name="action" value="increment"> + </button>
                                     </div>
-                                </form>
+                                </form> 
+
+                                {% comment %} <div class="col-lg-2 col-sm-6 col-6 d-flex align-items-center justify-content-between">
+                                    <button class="btn btn-light border" type="button" onclick="decrementQuantity('<%= x.productId._id %>','<%= newcart._id %>')">
+                                      <i class="fas fa-minus"></i>
+                                    </button>
+                                    <input class="form-control text-center quantity-input" type="text" value="{{cart.quantity}}"
+                                      id="quantity-<%= x.productId._id %>" readonly />
+                                    <button class="btn btn-light border" type="button" onclick="incrementQuantity('<%= x.productId._id %>','<%= newcart._id %>')">
+                                      <i class="fas fa-plus"></i>
+                                    </button>
+                                  </div>
+                                  <div class="col-lg-2"> {% endcomment %}
+
+
+
+
                                 <div class="flex items-center space-x-4">
-                                    <h2 class="font-semibold">{{ cart.product.price }}</h2>
+                                    <h2 class="font-semibold">{{ cart.variant.discount_price }}</h2>
                                 </div>
                             </div>
                         </div>
@@ -87,34 +102,58 @@
 
    {% endif %}
 
-   
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
 <script>
-    // Update the following code within your existing script tag or in a separate JavaScript file
-    $(document).ready(function () {
-        $('.update-cart-form').on('submit', function (e) {
-            e.preventDefault();
+   function updateQuantity(productId, count, cartId) {
+    var quantityElement = document.getElementById("quantity-" + productId);
+    var currentQuantity = parseInt(quantityElement.value, 10);
 
-            $.ajax({
-                type: 'POST',
-                url: $(this).attr('action'),
-                data: $(this).serialize(),
-                success: function (data) {
-                    // Update the cart container with the new content
-                    $('#cart-container').html(data.cartitems);
+    if (count === 1) {
+      currentQuantity += 1;
+      quantityElement.value = currentQuantity;
+    } else if (count === -1 && currentQuantity > 1) {
+      currentQuantity -= 1;
+      quantityElement.value = currentQuantity;
+    }
 
-                    // Update total and grand total
-                    $('.subtotal-value').text(data.total);
-                    $('.grand-total-value').text(data.grand_total);
-                },
-                error: function (error) {
-                    console.log('Error:', error);
-                }
-            });
-        });
-    });
-</script>
+    fetch('/updatequantity', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        productId: productId,
+        quantity: currentQuantity,
+        cartId: cartId,
+      })
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Response from the server:", data);
+        window.location.reload();
+
+      })
+      .catch((error) => {
+        console.error('Error updating quantity:', error);
+        window.location.reload();
+      });
+  }
+
+  function decrementQuantity(productId, cartId) {
+    updateQuantity(productId, -1, cartId);
+  }
+
+  function incrementQuantity(productId, cartId) {
+    updateQuantity(productId, 1, cartId);
+  }
+  function updateCartUI() {
+    var cartEmpty =` <%= product.length === 0 %>`;
+
+    if (cartEmpty) {
+      document.querySelector('.btn-success').disabled = true;
+    }
+  }
+  updateCartUI();
+</script> 
 
 </body>
 

@@ -24,7 +24,7 @@
             <div class="w-3/4 m-5 bg-gray-100 font-semibold shadow-md flex justify-between">
               <div>
               <p class="ml-5">{{ transaction.timestamp }}</p>
-              <p class="font-semibold ml-5 ">{{ transaction.transaction_type }}</p>
+              <p class="font-semibold ml-5 ">{{order.id}} {{ transaction.transaction_details }}</p>
             </div>
             <div class="flex items-center m-3 space-x-4">
                   <p class="text-xl font-semibold ">{{ transaction.amount }}</p>

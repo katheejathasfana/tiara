@@ -27,9 +27,9 @@
             <div class="p-4">
               <ul class="space-y-1">
                 <li>
-                  <a href="#"
+                  <a href=" {% url 'dashboard' %}"
                     class="flex hover:bg-yellow-50 rounded-xl font-semibold text-sm text-gray-900 py-3 px-4
-                    {% if active_menu == 'dashboard' %} bg-yellow-800 {% endif %}">
+                   ">
                     <svg xmlns="http://www.w3.org/2000/svg" width="1em"
                       height="1em" fill="currentColor" class="text-lg mr-4"
                       viewBox="0 0 16 16">
@@ -45,12 +45,7 @@
                       Category
                   </a>
               </li>
-              <a href="{% url 'variant' %}" class="flex hover:bg-yellow-50 rounded-xl font-semibold text-sm text-gray-900 py-3 px-4
-                      {% if active_menu == 'Users' %} bg-yellow-900 {% endif %}">
-                      <i class="fa-solid fa-list text-xl mr-5" fill="currentColor"></i>
-                      Variant
-                  </a>
-
+              
               <li>
                 <a href="{% url 'product' %}" class="flex focus::bg-yellow-50 focus:rounded-xl focus:font-semibold hover:bg-yellow-50 rounded-xl font-semibold text-sm text-gray-900 py-3 px-4
                     {% if active_menu == 'Users' %} bg-yellow-900 {% endif %}">

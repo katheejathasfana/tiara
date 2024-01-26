@@ -2,62 +2,85 @@
 {% block title %} Product Details {% endblock title %}
 {% block content %}
 <body class="bg-gray-100">
+    {% if messages %}
+    {% for message in messages %}
+   
+    <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+      role="alert">
+      {{message}}
+    </div>
+    {% endfor %}
+    {% endif %}
 
     <div class="max-w-3xl mx-auto p-8 bg-white rounded-md shadow-md flex flex-col md:flex-row m-6">
-        
+       
         <div class="md:pr-8 md:w-1/2" id="img-container">
-            <img id="mainImage" src="{{ product.img1.url }}" alt="Product Image" class="rounded-md shadow-md w-full h-auto mb-4 md:h-96 md:w-96 md:mb-0">
+            <img id="mainImage" src="{{ variant.img1.url }}" alt="Product Image" class="rounded-md shadow-md w-full h-auto mb-4 md:h-96 md:w-96 md:mb-0">
         
             <div class="flex mt-4 md:mt-0">
-                <img onclick="changeImage('{{ product.img1.url }}')" src="{{ product.img1.url }}" alt="Small Image 1" class="rounded-md shadow-md m-3 ml-0 w-16 h-20 md:w-20 md:h-24">
+                <img onclick="changeImage('{{ variant.img1.url }}')" src="{{ variant.img1.url }}" alt="Small Image 1" class="rounded-md shadow-md m-3 ml-0 w-16 h-20 md:w-20 md:h-24">
         
-                {% if product.img2 %}
-                    <img onclick="changeImage('{{ product.img2.url }}')" src="{{ product.img2.url }}" alt="Small Image 2" class="rounded-md shadow-md m-3 w-16 h-20 md:w-20 md:h-24">
+                {% if variant.img2 %}
+                    <img onclick="changeImage('{{ variant.img2.url }}')" src="{{ variant.img2.url }}" alt="Small Image 2" class="rounded-md shadow-md m-3 w-16 h-20 md:w-20 md:h-24">
                 {% endif %}
         
-                {% if product.img3 %}
-                    <img onclick="changeImage('{{ product.img3.url }}')" src="{{ product.img3.url }}" alt="Small Image 3" class="rounded-md shadow-md m-3 w-16 h-20 md:w-20 md:h-24">
+                {% if variant.img3 %}
+                    <img onclick="changeImage('{{ variant.img3.url }}')" src="{{ variant.img3.url }}" alt="Small Image 3" class="rounded-md shadow-md m-3 w-16 h-20 md:w-20 md:h-24">
                 {% endif %}
             </div>
         </div>
-        
 
         <div class="p-6 md:w-1/2">
-            <h2 class="text-2xl font-semibold text-black  mb-4">{{ product.productname }}</h2>
+            <h2 class="text-2xl font-semibold text-black  mb-4">{{variant.product.productname }}</h2>
 
-            <p class="text-gray-600 font-semibold">Category: {{product.category}}</p>
+            <p class="text-gray-700 font-semibold">Category: {{variant.product.category}}</p>
+            <p class="text-gray-700 font-semibold">Color: {{variant.color}}</p>
             
 
-            <p class="text-xl text-yellow-900 font-bold mb-4">{{product.price}}</p>
-            {% if product.stock <= 5 %}
-                <p class="text-green-700 mb-4 font-semibold">In Stock: {{ product.stock }}</p>
+            <p class="text-xl text-yellow-900 font-bold mb-4">{{variant.discount_price}}</p>
+             {% if variant.product.offer or variant.product.category.offer%} 
+            <span class="text-lg font-semibold text-slate-900 line-through text-center">{{ variant.price }}</span>
+            {% endif %} 
+
+            {% if variant.stock <= 5 > 0 %}
+                <p class="text-green-700 mb-4 font-semibold">In Stock: {{ variant.stock }}</p>
+            {% elif variant.stock is 0 %}
+                <p class="text-green-700 mb-4 font-semibold">Out of stock</p>
             {% endif %}
 
 
         
             <p class="text-black text-md mb-4 font-semibold">Product Details :</p>
-            <p class="text-black text-sm mb-4">{{ product.details }}</p>
+            <p class="text-black text-sm mb-4">{{ variant.product.details }}</p>
 
 
             <p class="text-black text-md mb-4 font-semibold">Color</p>
             <select
-            id="variant"
-            class="font-semibold px-3 py-1 rounded-lg"
-            name="variant"
-        >{% for variant in variants %}
-        
-            <option value="{{ variant.id }}" {% if variant.id == product.varient.id %}selected{% endif %}>
-                {{ variant.name }}
+                id="variant"
+                class="font-semibold px-3 py-1 rounded-lg"
+                name="variant"
+                onchange="window.location.href = this.value;"
+            >
+            {% for variant_option in variants %}
+            <option value="{% url 'product_detail' variant_option.id %}" {% if variant_option.id == variant.id %}selected{% endif %}>
+                {{ variant_option.color }}
             </option>
-       
-    {% endfor %}
-        </select>
-
-        
-
+            
+        {% endfor %}
+            </select>
             <div class="flex items-center space-x-2 mt-4 md:mt-10">
-                <button class="px-5 py-2 bg-yellow-900 text-white rounded-md font-semibold "><a href="{% url 'add_to_cart' product.id %}">Add to Cart</a></button>
-                <a href="{% url 'addwishlist' product.id %}"><button class="px-3 py-2 border border-black text-black rounded-md font-semibold hover:bg-yellow-900 hover:text-white">Wishlist <i class="fa-regular fa-heart"></i></button></a>
+            {%if variant.stock is 0 %}
+            <button class="px-5 py-2 bg-yellow-900 text-white rounded-md font-semibold ">
+               Out of Stock
+           </button>
+           {% else %}
+            
+                <button class="px-5 py-2 bg-yellow-900 text-white rounded-md font-semibold ">
+                     <a href="{% url 'add_to_cart' variant.id %}">Add to Cart</a> 
+                </button>
+            {% endif %}
+                 <a href="{% url 'addwishlist' variant.id %}">
+                    <button class="px-3 py-2 border border-black text-black rounded-md font-semibold hover:bg-yellow-900 hover:text-white">Wishlist <i class="fa-regular fa-heart"></i></button></a>
             </div>
         </div>
     </div>
@@ -68,6 +91,7 @@
             {{ product.description|linebreaks }}
         </p>
     </div>
+
 
     <script>
         function changeImage(newImageUrl) {

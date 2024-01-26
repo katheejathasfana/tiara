@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Update Category</title>
+</head>
+<body class="bg-yellow-50">
+    <div class="max-w-md mx-auto mt-10 p-6 bg-white  rounded-md shadow-md">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Update Category</h2>
+        
+        <form action="{% url 'update_category' category.id %}" method="POST"  enctype="multipart/form-data">
+
+          {% csrf_token %}
+          {% if messages %}
+            <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4" role="alert">
+              <p class="font-bold">Alert!</p>
+              {% for message in messages %}
+                {{ message }}
+              {% endfor %}
+            </div>
+          {% endif %}
+          
+         {% if category %}
+          <div class="mb-4">
+            <label for="name" class="block text-sm font-medium text-gray-600">Product Name</label>
+            <input type="text" id="name" name="name" class="mt-1 p-2 w-full border rounded-md" value="{{category.name}}">
+          </div>
+
+          
+        <div class="col-span-2 sm:col-span-1">
+          <label
+              for="offer"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Offer</label
+          >
+          <input
+              type="number"
+              name="offer"
+              id="offer"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 " oninput="this.value = this.value.slice(0, 3)" value="{{ category.offer.discount_prcnt}}"
+          />
+      </div>
+      <div class="col-span-2 sm:col-span-1">
+          <label
+              for="expire date"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Expire Date</label
+          >
+          <input
+              type="date"
+              name="expire"
+              id="expire"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{ category.offer.expire_date}}"
+              
+              
+          />
+      </div>
+
+      
+      <div class="mb-4">
+        <label for="image" class="block text-sm font-medium text-gray-600">Image</label>
+    
+        {% if category.image %}
+            <img src="{{ category.image.url }}" alt="Current Image" class="mb-2 border rounded-md">
+        {% endif %}
+    
+        <input type="file" id="image" name="image" class="mt-1 p-2 w-full border rounded-md">
+        <p class="mt-2 text-sm text-gray-500">Upload a new image for Image1 (leave blank to keep the current image).</p>
+    </div>
+
+    
+      <label for="remove_image">Remove Current Image:</label>
+      <input type="checkbox" id="remove_image" name="remove_image">
+  
+    
+    
+  
+       
+        
+          
+        
+          <div class="flex items-center justify-end mt-4">
+            <button type="submit" class="px-4 py-2 bg-yellow-900 text-white rounded-md focus:outline-none focus:ring">
+              Update
+            </button>
+          </div>
+          {% endif %}
+        </form>
+      </div>
+      
+    
+</body>
+</html>

@@ -44,13 +44,19 @@
   {% for category in categories %}
   <div class="relative mx-6 my-6">
     <a href="{% url 'categories' category.id %}">
-      <img src="{{category.image.url}}" class="w-full h-auto rounded" a href="" style="height: 250px; width: 200px; ">
-      <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-black text-center"
-        style="background-color: rgba(237, 189, 189, 0.5); width: 100%;">
-        <h5 class="text-lg font-semibold">{{category.name}}</h5>
-      </div>
+        <img src="{{ category.image.url }}" class="w-full h-auto rounded" style="height: 250px; width: 200px;">
+        <div class="absolute top-0 left-0 transform -translate-x-1/2 text-white text-center"
+            style="background-color: rgba(0, 0, 0, 0.5); width: 50px;">
+            {% if category.offer %}
+                <p class="text-sm font-semibold">{{ category.offer.discount_prcnt }}% OFF</p>
+            {% endif %}
+        </div>
+        <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-black text-center"
+            style="background-color: rgba(237, 189, 189, 0.5); width: 100%;">
+            <h5 class="text-lg font-semibold">{{ category.name }}</h5>
+        </div>
     </a>
-  </div>
+</div>
   {% if forloop.counter|divisibleby:3 and not forloop.last %}
 </div>
 <div class="flex items justify-center items-center md:flex-row pr-0 flex-col items-center">

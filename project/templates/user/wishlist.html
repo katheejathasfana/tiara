@@ -1,5 +1,5 @@
 {% extends 'base.html' %} 
-{% block title %}My orders {% endblock title %}
+{% block title %}My Wishlist {% endblock title %}
 {% block content %}
 {% if messages %}
 {% for message in messages %}
@@ -28,21 +28,21 @@
        
             <a href="#"><i class="fa-solid fa-xmark absolute top-0 right-0"></i></a>
 
-            <a href="{% url 'product_details' list.product.id %}">
+            <a href="{% url 'product_details' list.variant.id %}">
                 <div class="m-10 max-w-xs overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md transition-transform transform hover:scale-105" style="width: 150px; height: 300px;">
-                    <img class="object-cover" src="{{ list.product.img1.url }}" alt="product image" style="height: 150px; width: 200px; align-items: center;" />
-                    <a href="{% url 'removewishlist' list.product.id %}"><i class="fa-solid fa-xmark absolute top-1 right-1"></i></a>
+                    <img class="object-cover" src="{{ list.variant.img1.url }}" alt="product image" style="height: 150px; width: 200px; align-items: center;" />
+                    <a href="{% url 'removewishlist' list.variant.id %}"><i class="fa-solid fa-xmark absolute top-1 right-1"></i></a>
                     
                     <div class="mt-2">
              
             
-                <p class= "text-center font-semibold">{{ list.product.productname }}</p>
+                <p class= "text-center font-semibold">{{ list.variant.product.productname }}</p>
               
             
               <div class=" flex items-center justify-center">
                 <p>
-                  <span class="text-md font-bold  text-center">{{ list.product.price }}</span>
-                  <span class="text-sm text-slate-900 line-through text-center">{{ list.product.price }}</span>
+                  <span class="text-md font-bold  text-center">{{ list.variant.price }}</span>
+                  <span class="text-sm text-slate-900 line-through text-center">{{ list.variant.price }}</span>
                 </p>
                  
                 <div class="flex items-center">
@@ -51,9 +51,14 @@
                 </div>
               </div>
               <div class="text-center m-2"> <!-- Add this container with text-center class -->
+                {% if list.variant.stock is 0 %}
                 <button class="text-md font-semibold text-white bg-yellow-900 rounded-lg px-4 py-2" >
-                    <a href="{% url 'add_to_cart' list.product.id %}">Move to Bag</a>
+                Out of stock</button>
+                  {% else %}
+                <button class="text-md font-semibold text-white bg-yellow-900 rounded-lg px-4 py-2" >
+                    <a href="{% url 'add_to_cart' list.variant.id %}">Move to Bag</a>
                 </button>
+                {% endif %}
             </div>
             </div>
           </div>

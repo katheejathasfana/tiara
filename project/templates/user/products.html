@@ -20,10 +20,18 @@
 <div class="flex flex-wrap justify-center">
   {% if products %}
     {% for product in products %}
+    
     <a href="{% url 'product_details' product.id %}">
       <div class="m-10  max-w-xs overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md transition-transform transform hover:scale-105" style="width: 200px; height: 350px;">
         <div class="relative">
-       <img class="object-cover" src="{{ product.img1.url }}" alt="product image" style="height: 200px; width: 200px; align-items: center;" />
+       <img class="object-cover" src="{{ product.variants.first.img1.url }}" alt="product image" style="height: 200px; width: 200px; align-items: center;" />
+       <div class="absolute top-2 left-1 text-black bg-yellow-900 text-center"
+            style="background-color: gray; width: 80px;">
+            {% if product.offer or productt.category.offer %}
+                <p class="text-sm font-semibold">{{ product.offer.discount_prcnt }}% OFF</p>
+            {% endif %}
+        </div>
+
        <div class="absolute top-0 right-0">
         {% if product in request.user.wishlist.products.all %}
             <!-- Product is in the wishlist -->
@@ -42,8 +50,11 @@
         </div>
           <div class="mt-2 mb-5 flex items-center justify-center">
             <p>
-              <span class="text-2xl font-bold text-slate-900 text-center">{{ product.price }}</span>
-              <span class="text-sm text-slate-900 line-through text-center">{{ product.price }}</span>
+              
+              <span class="text-2xl font-bold text-slate-900 text-center">{{ product.variants.first.discount_price }}</span>
+              {% if product.offer or productt.category.offer%}
+            <span class="text-sm text-slate-900 line-through text-center">{{ product.variants.first.price }}</span>
+              {% endif %}
             </p>
             <div class="flex items-center">
               <!-- Your existing rating stars and other icons -->

@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'products',
     'authentication',
     'adminapp',
-    'social_django',
+   
     'cart',
     'userdetails',
     
@@ -118,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -137,7 +137,7 @@ STATICFILES_DIRS=[BASE_DIR / "static"]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
@@ -148,16 +148,16 @@ EMAIL_USE_SSL=False
 
 AUTH_USER_MODEL = 'authentication.Custom_user'
 
-AUTHENTICATION_BACKENDS = [
-    'social_core.backends.google.GoogleOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
-]
+# AUTHENTICATION_BACKENDS = [
+#     'social_core.backends.google.GoogleOAuth2',
+#     'django.contrib.auth.backends.ModelBackend',
+# ]
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1009020637947-p285tr1dcobjj70s8bopq2hcop1ic5tn.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
-LOGIN_URL = 'login'
-LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = 'home'
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1009020637947-p285tr1dcobjj70s8bopq2hcop1ic5tn.apps.googleusercontent.com'
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+# LOGIN_URL = 'login'
+# LOGOUT_URL = 'logout'
+# LOGIN_REDIRECT_URL = 'home'
 
 DEBUG = True
 

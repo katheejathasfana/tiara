@@ -4,13 +4,13 @@
     <main class="ml-60 pt-16 max-h-screen overflow-auto">
         <h1 class="text-xl font-semibold text-center">Product Management</h1>
         <div class="px-6 py-8">
-            <div class="max-w-full mx-auto">
-                <div class="bg-white rounded-3xl p-8 mb-5">
+            
+                <div class="bg-white rounded-3xl w-full mb-5">
                     <!-- Modal toggle -->
                     <button
                         data-modal-target="crud-modal"
                         data-modal-toggle="crud-modal"
-                        class="block text-white bg-yellow-900 font-medium rounded-lg text-sm px-5 text-center"
+                        class="block text-white bg-yellow-900 m-5 font-medium rounded-lg text-sm px-5 text-center"
                         type="button"
                         style="margin-left: 700px; height: 40px; margin-bottom: 10px"
                     >
@@ -84,39 +84,11 @@
                                                 id="name"
                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                 placeholder="Type product name"
-                                                required=""
+                                                
                                             />
                                         </div>
-                                        <div class="col-span-2 sm:col-span-1">
-                                            <label
-                                                for="price"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                                >Price</label
-                                            >
-                                            <input
-                                                type="number"
-                                                name="price"
-                                                id="price"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                placeholder="$2999"
-                                                required=""
-                                            />
-                                        </div>
-                                        <div class="col-span-2 sm:col-span-1">
-                                            <label
-                                                for="price"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                                >Stock</label
-                                            >
-                                            <input
-                                                type="number"
-                                                name="stock"
-                                                id="stock"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                placeholder="123"
-                                                required=""
-                                            />
-                                        </div>
+                                        
+                                       
 
                                         <div class="col-span-2 sm:col-span-1">
                                             <label
@@ -136,20 +108,38 @@
                                         </div>
                                         <div class="col-span-2 sm:col-span-1">
                                             <label
-                                                for="variant"
+                                                for="offer"
                                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                                >Variant</label
+                                                >Offer</label
                                             >
-                                            <select
-                                                id="variant"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                name="variant"
-                                            >
-                                                {% for variant in variants %} 
-                                                <option value="{{ variant.id }}">{{ variant.name }}</option>
-                                                 {% endfor %}
-                                            </select>
+                                            <input
+                                                type="number"
+                                                name="offer"
+                                                id="offer"
+                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                placeholder="50%"
+                                                oninput="this.value = this.value.slice(0, 3)"
+                                                
+                                            />
                                         </div>
+                                        <div class="col-span-2 sm:col-span-1">
+                                            <label
+                                                for="expire date"
+                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                >Expire Date</label
+                                            >
+                                            <input
+                                                type="date"
+                                                name="expire"
+                                                id="expire"
+                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                placeholder
+                                                
+                                            />
+                                        </div>
+
+
+                                        
                                         <div class="col-span-2 ">
                                             <label
                                                 for="productdetails"
@@ -162,42 +152,11 @@
                                                 id="product_details"
                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                 placeholder="product details"
-                                                required=""
+                                             
                                             />
                                         </div>
 
-                                        <div class="col-span-2">
-                                            <label
-                                                for="category"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                                >Choose the product Image</label
-                                            >
-                                            <input type="file" class="form-control -file text-sm" id="image2" name="img1" />
-                                        </div>
-                                        <div class="col-span-2">
-                                            <label
-                                                for="category"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                                >Choose the product Image</label
-                                            >
-                                            <input type="file" class="form-control -file text-sm" id="image2" name="img2" />
-                                        </div>
-                                        <div class="col-span-2">
-                                            <label
-                                                for="category"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                                >Choose the product Image</label
-                                            >
-                                            <input type="file" class="form-control -file text-sm" id="image2" name="img3" />
-                                        </div>
-                                        <div class="col-span-2">
-                                            <label
-                                                for="category"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                                >Choose the product Image</label
-                                            >
-                                            <input type="file" class="form-control -file text-sm" id="image2" name="img4" />
-                                        </div>
+                                        
                                         <div class="col-span-2">
                                             <label
                                                 for="description"
@@ -223,20 +182,26 @@
                             </div>
                         </div>
                     </div>
+                    {% if messages %}
+                            <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4" role="alert">
+                                <p class="font-bold">Alert!</p>
+                                {% for message in messages %}
+                                    {{ message }}
+                                      {% endfor %}
+                                    </div>
+                                  {% endif %}
+
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-6 py-3">Id</th>
                                 <th scope="col" class="px-6 py-3">Name</th>
-
                                 <th scope="col" class="px-6 py-3">Category</th>
-
-                                <th scope="col" class="px-6 py-3">Image</th>
-                                <th scope="col" class="px-6 py-3">Stock</th>
-
-                                <th scope="col" class="px-6 py-3">Price</th>
-
+                                <th scope="col" class="px-6 py-3">offer</th>
+                                <th scope="col" class="px-6 py-3">Expire Date</th>
+                                <th scope="col" class="px-6 py-3">Status</th>
                                 <th scope="col" class="px-6 py-3">Edit</th>
+                                <th scope="col" class="px-6 py-3">products</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -250,30 +215,33 @@
                                 </th>
                                 <th
                                     scope="row"
-                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                                    class="font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                 >
                                     {{product.productname}}
                                 </th>
                                 <td class="px-6 py-4">{{product.category}}</td>
-                                <!-- <td class="px-6 py-4">{{product.details}}</td> -->
-                                <td>
-                                    {% if product.img1 %}
-                                    <img
-                                        src="{{ product.img1.url }}"
-                                        alt="{{ product.productname}}"
-                                        style="width: 100px; height: 100px"
-                                    />
-
+                                <td class="px-6 py-4">{{product.offer.discount_prcnt}}</td>
+                                <td class="">{{product.offer.expire_date}}</td>
+                                <td class="px-6 py-4">
+                                    {% if product.active %}
+                                    <form action="{% url 'product_active' product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button class="bg-green-800 text-white font-semiboldpy-2 px-4 rounded-full">
+                                            Active
+                                        </button>
+                                    </form>
+                                    {% else %}
+                                    <form action="{% url 'product_active' product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button class="bg-red-600 text-white font-semiboldpy-2 px-4 rounded-full">
+                                            Block
+                                        </button>
+                                    </form>
                                     {% endif %}
                                 </td>
-
-                                <td class="px-6 py-4">{{product.stock}}</td>
-
-                                <td class="px-6 py-4">{{product.price}}</td>
-
-
-
-                                <td class=" flex items-center space-x-4 px-6 py-4">
+                            
+                                <td class="  items-center space-x-4 ">
+                                    
                                     <a href="{% url 'get_product' product.id %}">
                                         <i class="fa-solid fa-pen-to-square text-black p-2"></i>
                                     </a>
@@ -282,6 +250,12 @@
                                         <i class="fa-solid fa-trash text-black"></i>
                                     </a>
                                 </td>
+
+                                <td class="flex items-center space-x-4 px-4 py-4">
+                                    
+                                    <a href="{%url 'variant' product.id %}"><button class="bg-gray-300 px-6 py-2 ronded-lg font-semibold">views</button>
+                                </td>
+
                             </tr>
                             {% endfor %} {% endif %}
                         </tbody>

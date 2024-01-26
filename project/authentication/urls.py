@@ -8,12 +8,13 @@ urlpatterns = [
    
     path('search/', views.search , name="search"),
     
-    path('verification/<str:email>/', views.verification,name="verification"),
+    path('verification/', views.verification,name="verification"),
     path('forgetpassword/', views.forgetpassword, name="forgetpassword"),
-    path('resendotp/<str:email>/', views.resend_otp,name="resendotp"),
+    path('resendotp/', views.resend_otp,name="resendotp"),
     path('otpverify/<str:email>/', views.otp_verify,name="otp_verify"),
     path('reset_password/<str:email>/', views.resetpassword, name="resetpassword"),
-    path('product_details/<int:id>', views.product_details,  name="product_details"),
+    path('product_details/<int:id>/', views.product_details,  name="product_details"),
+    path('product_detail/<int:id>/', views.product_detail,  name="product_detail"),
     path('products/',views.products, name="products"),
     path('category/<int:id>', views.category_product , name="categories"),
     
