@@ -49,14 +49,13 @@ class Variant(models.Model):
             product_offer = self.product.offer
             if product_offer and product_offer.expire_date >= date.today():
                 self.discount_price = round(float(self.price) - (float(self.price) * product_offer.discount_prcnt / 100))
-            else:
-                self.discount_price = self.price
-        elif self.product.category:
-            category_offer = self.product.category.offer
-            if category_offer and category_offer.expire_date >= date.today():
-                self.discount_price = round(float(self.price) - (float(self.price) * category_offer.discount_prcnt / 100))
-            else:
-                self.discount_price = self.price
+           
+            elif self.product.category:
+                category_offer = self.product.category.offer
+                if category_offer and category_offer.expire_date >= date.today():
+                    self.discount_price = round(float(self.price) - (float(self.price) * category_offer.discount_prcnt / 100))
+        else:
+            self.discount_price = self.price
 
         super().save(*args, **kwargs)
 

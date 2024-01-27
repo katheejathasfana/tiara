@@ -10,7 +10,7 @@ from .models import *
 from cart.models import *
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control,never_cache
-from django.db.models import Sum
+from django.db.models import Sum,Count
 from datetime import datetime
 from django.db.models.functions import TruncDate,TruncWeek,TruncMonth,TruncYear
 
@@ -103,9 +103,29 @@ def dashboard(request):
     return render(request,'admin/dashboard.html',context)
 
 
+
 def sales_report(request):
-    sales_data = Order.objects.values('order_date').annotate(total_sales=Sum('total_amount'))
-    return render(request, 'admin/sales_report.html', {'sales_data': sales_data})
+    # Fetch sales data, grouping by order date
+    sales_data = Order.objects.values('order_date').annotate(
+        total_sales=Sum('total_amount'),
+        total_items=Sum('quantity'),
+        total_orders=Count('id'),
+    )
+
+    # Calculate overall statistics
+    total_orders = Order.objects.count()
+    total_amount = Order.objects.aggregate(Sum('total_amount'))['total_amount__sum']
+    average_order_value = total_amount / total_orders if total_orders > 0 else 0
+
+    context = {
+        'sales_data': sales_data,
+        'total_orders': total_orders,
+        'total_amount': total_amount,
+        'average_order_value': average_order_value,
+    }
+
+    return render(request, 'admin/sales_report.html', context)
+
 
 def signout(request):
     logout(request)
