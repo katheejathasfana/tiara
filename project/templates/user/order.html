@@ -23,13 +23,13 @@
            
             <div class="m-4 ">
             {% if order.status == 'confirmed' %}
-            <p class="text-md font-semibold">{{ order.quantity}} Items Confirmed</p>
+            <p class="text-md font-semibold">Ordered Items Confirmed</p>
             {% elif order.status == 'cancelled' %}
-            <p class="text-md font-semibold">{{ order_item.quantity }} Items Cancelled</p>
+            <p class="text-md font-semibold"> Ordered Items Cancelled</p>
             {% elif order.status == 'shipped' %}
-            <p class="text-md font-semibold">{{ order_item.quantity }} Items Shipped</p>
+            <p class="text-md font-semibold">Ordered Items Shipped</p>
             {% elif order.status == 'delivered' %}
-            <p class="text-md font-semibold">{{ order_item.quantity }} Items Delivered</p>
+            <p class="text-md font-semibold">Ordered Items Delivered</p>
               {% endif %}
             
               <div style="white-space: nowrap; overflow-x: auto;">

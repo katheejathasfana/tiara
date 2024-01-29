@@ -6,13 +6,14 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, render,redirect
 from authentication.models import *
 from project import settings
+from userdetails.models import Wallet,  WalletTransaction
 from .models import *
 from cart.models import *
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control,never_cache
 from django.db.models import Sum,Count
 from datetime import datetime
-from django.db.models.functions import TruncDate,TruncWeek,TruncMonth,TruncYear
+
 
 @never_cache
 def admin_login(request):
@@ -542,7 +543,7 @@ def delete_product(request,id):
 
 @login_required(login_url='admin_login')
 def order(request):
-    orders=Order.objects.all()
+    orders=Order.objects.all().order_by('-id')
     return render(request ,'admin/order.html',{'orders': orders})
     
 @login_required(login_url='admin_login')
@@ -559,7 +560,17 @@ def change_order_status(request, order_id):
     if request.method == 'POST':
         new_status = request.POST.get('new_status')
         order.status = new_status
-        order.save()
+        if order.status=='cancelled':
+            order.save()
+        if order.payment_method=='Online payment' or 'Wallet':
+            refund_amount=order.Grand_total
+            user=order.user
+            wallet, created = Wallet.objects.get_or_create(user=user)
+            wallet.balance+=refund_amount
+            WalletTransaction.objects.create(user=request.user, amount=refund_amount, transaction_type='credit', transaction_details= "Tiara"+ str(order.id) + " order cancelled")
+
+            
+            wallet.save()
         return redirect('order') 
     return render(request, 'admin/order.html', {'order': order})
 
@@ -576,8 +587,12 @@ def add_coupon(request):
         code = request.POST.get('code')
         percentage = request.POST.get('percentage')
         min_amount = request.POST.get('min')
-        print(code)
-        print()
+        try:
+            if Coupon.objects.filter(code=code).exists():
+                messages.error(request,"coupon alreaddy exists")
+                return redirect('coupons')
+        except:
+            pass
         if not code or not percentage or not min_amount or code.isspace():
             messages.error(request, "Fill in all the required fields")
             return redirect('coupons')

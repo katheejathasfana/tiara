@@ -21,7 +21,8 @@ class Cart(models.Model):
         t=sum(Decimal(item.variant.price) * item.quantity for item in cartitems)
         total = sum(Decimal(item.variant.discount_price) * item.quantity for item in cartitems)
         total_quantity = sum(item.quantity for item in cartitems)
-        Grand_total = total + Decimal(self.shipping_charge)
+        Grand_total = total + Decimal(self.shipping_charge)- Decimal(self.discnt)
+
         self.total = total
         self.grand_total = Grand_total
         self.total_quantity = total_quantity

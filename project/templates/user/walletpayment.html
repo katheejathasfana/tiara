@@ -2,7 +2,7 @@
 {% block content %}
 <body>
 <div class="bg-yellow-100 shadow-md m-5 mt-10 text-center flex flex-col justify-center items-center" style="height: 150px; width: 400px;">
-    <form method="post" action="{% url 'paywallet' %}">
+    <form method="post" action="{% url 'paywallet' address.id %}">
         {% csrf_token %}
         {% if messages %}
         {% for message in messages %}

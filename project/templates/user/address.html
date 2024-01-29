@@ -22,7 +22,7 @@
 
                     {% if addresses %}
                         {% for address in addresses %}
-                            <div class="mb-4">
+                        <div class="sm:w-full md:w-1/2 lg:w-2/3 xl:w-2/3 mb-4 "  style="width:45%">
                                 <div class="bg-yellow-100 p-4 rounded-md shadow-md text-sm md:w-90">
                                     <div class="flex items-center space-x-4 align-items: flex-end">
                                         <a href="{% url 'get_address' address.id %}?source=address"><i class="fa fa-edit block text-black" type="button"></i></a>

@@ -16,6 +16,7 @@ from userdetails.models import *
 def cart(request):
     user = request.user
     cart, created = Cart.objects.get_or_create(user=user, is_paid=False)
+    cart.discnt=0
     cart.summarycart()
     cartitems = CartItem.objects.filter(cart=cart)
     count = cartitems.count()
@@ -104,7 +105,9 @@ def apply_coupon(request):
                     grand_total = cart.grand_total
                     discount = (grand_total * coupon.dis_per) / 100
                     cart.discnt = discount
+                    grand_total -= discount
                     cart.summarycart()
+                    
                     request.session['code'] = code
                     return redirect('address')
                 
@@ -112,6 +115,7 @@ def apply_coupon(request):
                     grand_total = cart.grand_total
                     discount = (grand_total * coupon.dis_per) / 100  
                     cart.discnt = discount
+                    grand_total -= discount
                     cart.summarycart()
                     request.session['code'] = code
                     return redirect('address')
@@ -226,7 +230,17 @@ def cod(request,address_id):
     cart=Cart.objects.get(user=user)
     cart.summarycart()
     address = Address.objects.get(id=address_id)
- 
+    return render(request,'user/cod.html',{ 'cart':cart, 'address':address})
+
+@login_required(login_url='login')
+def place_order(request,id):
+    user=request.user
+    email=user.email
+    address = Address.objects.get(id=id)
+    cart_items = CartItem.objects.all()
+    cart=Cart.objects.get(user=user)
+    cart.summarycart()
+    address=request.session.get('shipping_address')
     shipping_address = Shipping_address.objects.create(
         full_name=address.full_name,
         address=address.address,
@@ -235,20 +249,7 @@ def cod(request,address_id):
         pincode=address.pincode,
         phone_No=address.phone_No,
     )
-
-    request.session['shipping_address'] = shipping_address.id
-    return render(request,'user/cod.html',{ 'cart':cart, 'address':address})
-
-@login_required(login_url='login')
-def place_order(request):
-    user=request.user
-    email=user.email
-    # address = Address.objects.get(id=address_id)
-    cart_items = CartItem.objects.all()
-    cart=Cart.objects.get(user=user)
-    cart.summarycart()
-    address=request.session.get('shipping_address')
-    shipping_address = Shipping_address.objects.get(id=address)
+    
     order ,created = Order.objects.get_or_create(
         user=request.user, 
         shipping_address=shipping_address,
@@ -273,19 +274,28 @@ def place_order(request):
 
 
 @login_required(login_url='login')
-def wallet_payment(request):
+def wallet_payment(request,id):
     user=request.user
-    # address = Address.objects.get(id=address_id)
+    address = Address.objects.get(id=id)
+    print(address.id)
     cart=Cart.objects.get(user=user)
-    address = request.session.get('shipping_address')
-    address=Shipping_address.objects.get(id=address)
+    
+   
+   
     return render(request, 'user/walletpayment.html', {'cart': cart, 'address': address})
 
 @login_required(login_url='login')
-def pay_wallet(request):
+def pay_wallet(request,id):
+    address=Address.objects.get(id=id)
     user=request.user
-    address=request.session.get('shipping_address')
-    shipping_address = Shipping_address.objects.get(id=address)
+    shipping_address = Shipping_address.objects.create(
+        full_name=address.full_name,
+        address=address.address,
+        city=address.city,
+        country=address.country,
+        pincode=address.pincode,
+        phone_No=address.phone_No,
+    )
     cartitems=CartItem.objects.all()
     cart=Cart.objects.get(user=user)
     wallet=Wallet.objects.get(user=user)
@@ -338,14 +348,21 @@ def order_confirmation(request,order_id):
         
 
 @login_required(login_url='login')
-def online_payment(request):
+def online_payment(request,id):
     user=request.user
     cart_items = CartItem.objects.all()
-    # address = Address.objects.get(id=address_id)
+    address = Address.objects.get(id=id)
+    shipping_address = Shipping_address.objects.create(
+        full_name=address.full_name,
+        address=address.address,
+        city=address.city,
+        country=address.country,
+        pincode=address.pincode,
+        phone_No=address.phone_No,
+    )
     cart=Cart.objects.get(user=user)
     cart.summarycart()
-    address=request.session.get('shipping_address')
-    address = Shipping_address.objects.get(id=address)
+    
     client = razorpay.Client(auth=(settings.KEY,  settings.SECRET))
     amount = float(cart.grand_total)*100
 
@@ -358,7 +375,7 @@ def online_payment(request):
 
     order = Order.objects.create(
         user=request.user,  
-        shipping_address=address,
+        shipping_address=shipping_address,
         total_amount=cart.total,
         Grand_total=cart.grand_total,
         payment_status=1,  

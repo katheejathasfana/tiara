@@ -22,10 +22,9 @@ from userdetails.models import *
 
 def home(request):
     categories=Category.objects.all()
-    cartitem=CartItem.objects.count()
-    wishlist=Wishlist.objects.count()
-    print(wishlist)
-    return render(request,'user/Home.html',{'categories': categories, 'wishlist':wishlist, 'cartitem':cartitem})
+    
+   
+    return render(request,'user/Home.html',{'categories': categories})
 
 def signin(request):
     if request.user.is_authenticated:

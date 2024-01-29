@@ -14,7 +14,7 @@
             </li>
           
             <li class="border-b border-border-gray-300 pb-2 text-black">
-              <a href="{% url 'onlinepayment'%}" class="block py-2 px-4 hover:bg-yellow-900 focus:bg-yellow-900 focus:text-white focus:rounded-lg hover:rounded-lg hover:text-white">
+              <a href="{% url 'onlinepayment' address.id%}" class="block py-2 px-4 hover:bg-yellow-900 focus:bg-yellow-900 focus:text-white focus:rounded-lg hover:rounded-lg hover:text-white">
                 <h2 class="text-xl font-semibold mt-5">Razorpay</h2>
                 <p class="text-sm text-gray-600">Pay with RazorpayPayments</p>
               </a>
@@ -22,7 +22,7 @@
           
 
             <li class="border-b border-border-gray-300 pb-2 text-black">
-              <a href="{% url 'wallet_payment' %}" class="block py-2 px-4 hover:bg-yellow-900 focus:bg-yellow-900 focus:text-white focus:rounded-lg hover:rounded-lg hover:text-white">
+              <a href="{% url 'wallet_payment' address.id %}" class="block py-2 px-4 hover:bg-yellow-900 focus:bg-yellow-900 focus:text-white focus:rounded-lg hover:rounded-lg hover:text-white">
                 <h2 class="text-xl font-semibold mt-5">Wallet</h2>
                 <p class="text-sm text-gray-600">Pay with Wallet</p>
               </a>
