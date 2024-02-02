@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-0ok==z9sh-#&d6v+amhxcu!5_gbucnt#mc8xsnb8v9imzklfwv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['3.25.167.155']
 
 
 # Application definition
@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'products',
     'authentication',
     'adminapp',
-   
+    'whitenoise.runserver_nostatic',
     'cart',
     'userdetails',
     
@@ -57,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+     'whitenoise.middleware.WhiteNoiseMiddleware', 
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -133,6 +134,8 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS=[BASE_DIR / "static"]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT =  '/home/ubuntu/tiara/project'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
