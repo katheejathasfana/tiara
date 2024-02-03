@@ -44,20 +44,18 @@ class Variant(models.Model):
     active=models.BooleanField(default=True)
     discount_price = models.DecimalField(default=0, max_digits=7, decimal_places=2)
     
-    def save(self, *args, **kwargs):
+    def calculate_discount_price(self):
         if self.product:
             product_offer = self.product.offer
             if product_offer and product_offer.expire_date >= date.today():
                 self.discount_price = round(float(self.price) - (float(self.price) * product_offer.discount_prcnt / 100))
-           
-            elif self.product.category:
-                category_offer = self.product.category.offer
-                if category_offer and category_offer.expire_date >= date.today():
-                    self.discount_price = round(float(self.price) - (float(self.price) * category_offer.discount_prcnt / 100))
+        elif self.product.category:
+            category_offer = self.product.category.offer
+            if category_offer and category_offer.expire_date >= date.today():
+                self.discount_price = round(float(self.price) - (float(self.price) * category_offer.discount_prcnt / 100))
         else:
             self.discount_price = self.price
-
-        super().save(*args, **kwargs)
+        return self.discount_price
 
 class Coupon(models.Model):
     code=models.CharField(max_length=10, unique=True)

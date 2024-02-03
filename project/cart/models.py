@@ -63,7 +63,7 @@ class Order(models.Model):
     shipping_charge=models.DecimalField(default=40, max_digits=10,decimal_places=2)
     discount=models.DecimalField(default=0, max_digits=10,decimal_places=2)
     Grand_total=models.DecimalField(default=0, max_digits=10,decimal_places=2)
-    quantity=models.quantity = models.PositiveIntegerField(default=1)
+    quantity = models.PositiveIntegerField(default=1)
     
     payment_status_choices=[(1,'Completed'),
                             (2, 'Failure'),

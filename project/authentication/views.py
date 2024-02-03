@@ -20,10 +20,19 @@ import random
 import string
 from userdetails.models import *
 
+# def calculate_discount_price(product):
+#     if sproduct:
+#         product_offer = self.product.offer
+#         if product_offer and product_offer.expire_date >= date.today():
+#             return round(float(self.price) - (float(self.price) * product_offer.discount_prcnt / 100))
+#         elif self.product.category:
+#             category_offer = self.product.category.offer
+#             if category_offer and category_offer.expire_date >= date.today():
+#                 return round(float(self.price) - (float(self.price) * category_offer.discount_prcnt / 100))
+#         return self.price
+
 def home(request):
     categories=Category.objects.all()
-    
-   
     return render(request,'user/Home.html',{'categories': categories})
 
 def signin(request):
@@ -152,7 +161,7 @@ def resend_otp(request):
 def verification(request):
     email=request.session.get('email')
     print(email)
-    otp_time_limit = timedelta(minutes=2)
+    otp_time_limit = timedelta(minutes=1)
     current_time = datetime.now()
     print(current_time)
     # otp_created_at=timezone.make_aware(otp_created_at, timezone.get_default_timezone())
@@ -182,10 +191,15 @@ def verification(request):
                             wallet.save()
                             WalletTransaction.objects.create(user=provider, amount=referal_bonus, transaction_type='credit', transaction_details="referal bonus")
                             messages.success(request,"Account created succesfully")
-                            return redirect('login')
+                            user = authenticate(request, email=user.email, password=user.password)
+                            login(request, user)
+                            return redirect('home')
                         except:
                             messages.success(request,"Account created succesfully")
-                            return redirect('login')
+                            user1 = authenticate(request, email=user.email, password=user.password)
+                            login(request, user1)
+                            return redirect('home')
+                           
                    
                 else:
                     messages.error(request,"Otp is Inccorect")

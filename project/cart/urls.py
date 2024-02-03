@@ -19,12 +19,13 @@ urlpatterns = [
     path('update_address/<int:id>/', views.update_address, name='update_address'),
 
     path('cod/<int:address_id>/', views.cod, name="cod"),
+    path('create_order/<int:id>/', views.create_order, name="create_order"),
     path('onlinepayment/<int:id>/',views.online_payment, name="onlinepayment"),
     path('wallet_payment/<int:id>/',views.wallet_payment, name="wallet_payment"),
     path('paywallet/<int:id>/', views.pay_wallet, name="paywallet"),
 
 
-    path('place_order/',views.place_order, name="place_order"),
+    path('place_order/<int:id>/',views.place_order, name="place_order"),
     path('orderconfirmation/<int:order_id>/', views.order_confirmation, name="order_confirmation")
    
     

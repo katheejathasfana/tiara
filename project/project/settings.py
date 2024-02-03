@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-0ok==z9sh-#&d6v+amhxcu!5_gbucnt#mc8xsnb8v9imzklfwv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['3.25.167.155']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'products',
     'authentication',
     'adminapp',
-    'whitenoise.runserver_nostatic',
+    # 'whitenoise.runserver_nostatic',
     'cart',
     'userdetails',
     
@@ -57,7 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-     'whitenoise.middleware.WhiteNoiseMiddleware', 
+    #  'whitenoise.middleware.WhiteNoiseMiddleware', 
 ]
 
 ROOT_URLCONF = 'project.urls'

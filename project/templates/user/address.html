@@ -5,181 +5,186 @@
 {% endblock title %}
 
 {% block content %}
+<div class="flex flex-wrap justify-center">
 <body class="bg-white">
     <h1 class="text-3xl font-semibold m-5"> Choose Address</h1>
     <div class="container mx-auto mt-5 p-2">
-       
         <div class="flex flex-wrap">
-            <div class="sm:w-full md:w-1/2 lg:w-2/3 xl:w-2/3 mb-4 " style="width:60%">
+            <div class="sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/3" style="width:60%">
                 <div class="flex space-x-2">
-                    <div class="mb-4">
+                    {% if addresses %}
+                        {% for address in addresses %}
+                        <div class="sm:w-full md:w-full lg:w-1/2 xl:w-2/3 mb-4 "  style="width:45%">
+                            <div class="bg-yellow-100 p-4 rounded-md shadow-md text-sm md:w-90">
+                                <div class="flex items-center space-x-4 align-items: flex-end">
+                                    <a href="{% url 'get_address' address.id %}"><i class="fa fa-edit block text-black" type="button"></i></a>
+                                    <a href="{% url 'remove_address' address.id %}"><i class="fa fa-trash"></i></a>
+
+                                    <div class="sm:w-full md:w-full lg:w-1/2 xl:w-2/3">
+                                    <a href="{% url 'cod' address.id %}">
+                                        
+                                        <button type="submit" class="bg-yellow-900 text-white text-sm rounded-md" style="height:30px; width:100px; margin-left: 150px;">
+                                            Deliver Here
+                                        </button>
+                                    </a>
+                                </div>
+                                </div>
+                                <p>{{address.full_name }}</p>
+                                <p>{{ address.address }}</p>
+                                <p>{{ address.city }}</p>
+                                <p>{{ address.country }}</p>
+                                <p>{{ address.pincode }}</p>
+                                <p>{{ address.phone_No }}</p>
+                            </div>
+                        </div>
+                            {% if forloop.counter == 2 %}
+                        </div>
+                        <div class="flex space-x-4 flex-wrap">{% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <div class="sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/3 mb-4">
                         <div class="bg-yellow-100 p-4 rounded-md shadow-md md:w-96" style="height:180px; width:340px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center;">
                             <p data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="block text-black font-semibold py-2" type="button">
                                 Add Address+
                             </p>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    {% if addresses %}
-                        {% for address in addresses %}
-                        <div class="sm:w-full md:w-1/2 lg:w-2/3 xl:w-2/3 mb-4 "  style="width:45%">
-                                <div class="bg-yellow-100 p-4 rounded-md shadow-md text-sm md:w-90">
-                                    <div class="flex items-center space-x-4 align-items: flex-end">
-                                        <a href="{% url 'get_address' address.id %}?source=address"><i class="fa fa-edit block text-black" type="button"></i></a>
-                                        <a href="{% url 'remove_address' address.id %}?source=address"><i class="fa fa-trash"></i></a>
-                                        <a href="{% url 'cod' address.id %}">
-                                            <button type="submit" class="bg-yellow-900 text-white text-sm rounded-md" style="height:30px; width:100px; margin-left: 150px;">
-                                                Deliver Here
-                                            </button>
-                                        </a>
-                                    </div>
-                                    <p>{{ address.full_name }}</p>
-                                    <p>{{ address.address }}</p>
-                                    <p>{{ address.city }}</p>
-                                    <p>{{ address.country }}</p>
-                                    <p>{{ address.pincode }}</p>
-                                    <p>{{ address.phone_No }}</p>
+           
+                <div class="sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/3">
+                    <div class="bg-white p-6 rounded-lg border shadow-md" style="width:400px; margin-left:50px;">
+                        <div class="mb-3">
+                            <form method="post" action="{% url 'applycoupon' %}">
+                                {% csrf_token %}
+                                <div class="flex">
+                                    <input class=" border rounded-sm" type="text" id="code" name="code" placeholder="Enter your coupon code">
+                                    <button class="bg-yellow-900 px-6  text-white text-sm font-semibold rounded-sm " type="submit">Apply </button>
+    
                                 </div>
-                            </div>
-                            {% if forloop.counter == 1 %}
+                            </form>
                         </div>
-                        <div class="flex space-x-4 flex-wrap">{% endif %}
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            </div>
-
-            <div class="sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/3">
-                <div class="bg-white p-6 rounded-lg border shadow-md" style="width:350px; margin-left:100px;">
-                    <div class="mb-3">
-                        <form method="post" action="{% url 'applycoupon' %}">
-                            {% csrf_token %}
-                            <div class="flex">
-                                <input class=" border rounded-sm" type="text" id="code" name="code" placeholder="Enter your coupon code">
-                                <button class="bg-yellow-900 px-6  text-white text-sm font-semibold rounded-sm " type="submit">Apply </button>
-
-                            </div>
-                        </form>
-                    </div>
-                    {% if messages %}
-                        {% for message in messages %}
-                            <strong>{{ message }}</strong>
-                        {% endfor %}
-                    {% endif %}
-                    
-                    {% if cart.discnt != 0 %}
-                        <button class="bg-gray-200 px-4 py-2 rounded-lg relative">
-                            <strong>{{ coupon.code }}</strong>
-                            <a href="{% url 'cancelcoupon' %}">
-                                <i class="fas fa-times absolute text-sm top-0 right-0  mr-1"></i>
-                            </a>
-                        </button>
-                    {% endif %}  
-
-                    <div class="mb-2 flex justify-between mt-4">
-                        <h2 class="text-black font-semibold"> Bag</h2>
-                        <h2 class="text-black font-semibold">{{ cart.total_quantity }} Items</h2>
-                    </div>
-
-                    <div class="mb-2 flex justify-between">
-                        <p class="text-gray-700">Subtotal</p>
-                        <p class="text-gray-700">{{ cart.total }}</p>
-                    </div>
-                    <div class="flex justify-between">
-                        <p class="text-gray-700">Shipping</p>
-                        <p class="text-gray-700">{{ cart.shipping_charge }}</p>
-                    </div>
-                    <div class="flex justify-between">
-                        <p class="text-gray-700">Discount</p>
-                        <p class="text-gray-700">{{ cart.discnt }}</p>
-                    </div>
-                    <hr class="my-4" />
-                    <div class="flex justify-between">
-                        <p class="text-lg font-bold">Total</p>
-                        <p class="text-lg font-bold">{{ cart.grand_total }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ... (your existing code for the popup modal) ... -->
-
-    </div>
-</body>
-
-
-    <div id="popup-modal" tabindex="-1"
-        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-        <div class="relative p-4 w-full max-w-md max-h-full">
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                <button type="button"
-                    class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                    data-modal-hide="popup-modal">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                    </svg>
-                    <span class="sr-only">Close modal</span>
+                {% if messages %}
+                {% for message in messages %}
+                    <strong>{{ message }}</strong>
+                {% endfor %}
+            {% endif %}
+            
+            {% if cart.discnt != 0 %}
+                <button class="bg-gray-200 px-4 py-2 rounded-lg relative">
+                    <strong>{{ coupon.code }}</strong>
+                    <a href="{% url 'cancelcoupon' %}">
+                        <i class="fas fa-times absolute text-sm top-0 right-0  mr-1"></i>
+                    </a>
                 </button>
+            {% endif %}  
 
-                <div class="max-w-md mx-auto bg-white p-8 border rounded-md shadow-md">
-                    <h2 class="text-2xl font-bold mb-4">Shipping Address</h2>
+            <div class="mb-2 flex justify-between mt-4">
+                <h2 class="text-black font-semibold"> Bag</h2>
+                <h2 class="text-black font-semibold">{{ cart.total_quantity }} Items</h2>
+            </div>
 
-                    
-                    <form action="{% url 'add_address' %}" method="POST">
-                        {% csrf_token %}
-
-                        <!-- Name -->
-                        <div class="mb-4">
-                            <label for="name" class="block text-sm font-medium text-gray-600">Full Name</label>
-                            <input type="text" id="name" name="name"
-                                class="mt-1 p-2 border rounded-md w-full" />
-                        </div>
-
-                        <!-- Street Address -->
-                        <div class="mb-4">
-                            <label for="address" class="block text-sm font-medium text-gray-600">Address</label>
-                            <input type="text" id="address" name="address"
-                                class="mt-1 p-2 border rounded-md w-full"  />
-                        </div>
-
-                        <!-- City and Zip Code -->
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="mb-4">
-                                <label for="city" class="block text-sm font-medium text-gray-600">City</label>
-                                <input type="text" id="city" name="city"
-                                    class="mt-1 p-2 border rounded-md w-full"  />
-                            </div>
-                            <div class="mb-4">
-                                <label for="zip" class="block text-sm font-medium text-gray-600">Zip Code</label>
-                                <input type="number" id="zip" name="zip"
-                                    class="mt-1 p-2 border rounded-md w-full" oninput="this.value = this.value.slice(0, 6)" />
-                            </div>
-                        </div>
-
-                        <!-- Country -->
-                        <div class="mb-4">
-                            <label for="country" class="block text-sm font-medium text-gray-600">Country</label>
-                            <input type="text" id="country" name="country"
-                                class="mt-1 p-2 border rounded-md w-full"  />
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="phone" class="block text-sm font-medium text-gray-600">Phone Number</label>
-                            <input type="number" id="phone" name="phone" 
-                                class="mt-1 p-2 border rounded-md w-full" oninput="this.value = this.value.slice(0, 10)"  />
-                        </div>
-
-                        <!-- Submit Button -->
-                        <button type="submit" class="bg-yellow-900 text-white px-4 py-2 rounded-md ">
-                            Save Address
-                        </button>
-                    </form>
-                    
-                </div>
+            <div class="mb-2 flex justify-between">
+                <p class="text-gray-700">Subtotal</p>
+                <p class="text-gray-700">{{ cart.total }}</p>
+            </div>
+            <div class="flex justify-between">
+                <p class="text-gray-700">Shipping</p>
+                <p class="text-gray-700">{{ cart.shipping_charge }}</p>
+            </div>
+            <div class="flex justify-between">
+                <p class="text-gray-700">Discount</p>
+                <p class="text-gray-700">{{ cart.discnt }}</p>
+            </div>
+            <hr class="my-4" />
+            <div class="flex justify-between">
+                <p class="text-lg font-bold">Total</p>
+                <p class="text-lg font-bold">{{ cart.grand_total }}</p>
             </div>
         </div>
     </div>
+</div>
+
+</div>
+</div>
+</div>
+      
+
+    </div>
+    <div id="popup-modal" tabindex="-1"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <button type="button"
+                class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                data-modal-hide="popup-modal">
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                </svg>
+                <span class="sr-only">Close modal</span>
+            </button>
+
+            <div class="max-w-md mx-auto bg-white p-8 border rounded-md shadow-md">
+                <h2 class="text-2xl font-bold mb-4">Shipping Address</h2>
+
+                
+                <form action="{% url 'add_address' %}" method="POST">
+                    {% csrf_token %}
+
+                    <!-- Name -->
+                    <div class="mb-4">
+                        <label for="name" class="block text-sm font-medium text-gray-600">Full Name</label>
+                        <input type="text" id="name" name="name" maxlength="10"
+                            class="mt-1 p-2 border rounded-md w-full" />
+                    </div>
+
+                    <!-- Street Address -->
+                    <div class="mb-4">
+                        <label for="address" class="block text-sm font-medium text-gray-600">Address</label>
+                        <input type="text" id="address" name="address"
+                            class="mt-1 p-2 border rounded-md w-full"  />
+                    </div>
+
+                    <!-- City and Zip Code -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="mb-4">
+                            <label for="city" class="block text-sm font-medium text-gray-600">City</label>
+                            <input type="text" id="city" name="city" maxlength="10"
+                                class="mt-1 p-2 border rounded-md w-full"  />
+                        </div>
+                        <div class="mb-4">
+                            <label for="zip" class="block text-sm font-medium text-gray-600">Zip Code</label>
+                            <input type="number" id="zip" name="zip"
+                                class="mt-1 p-2 border rounded-md w-full" oninput="this.value = this.value.slice(0, 6)" />
+                        </div>
+                    </div>
+
+                    <!-- Country -->
+                    <div class="mb-4">
+                        <label for="country" class="block text-sm font-medium text-gray-600">Country</label>
+                        <input type="text" id="country" name="country" maxlength="10"
+                            class="mt-1 p-2 border rounded-md w-full"  />
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="phone" class="block text-sm font-medium text-gray-600">Phone Number</label>
+                        <input type="number" id="phone" name="phone" 
+                            class="mt-1 p-2 border rounded-md w-full" oninput="this.value = this.value.slice(0, 10)"  />
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="bg-yellow-900 text-white px-4 py-2 rounded-md ">
+                        Save Address
+                    </button>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
 </body>
-{% endblock content %}
+
+{% endblock content%}

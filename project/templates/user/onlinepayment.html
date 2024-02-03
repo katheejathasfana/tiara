@@ -4,10 +4,11 @@
 <body>
     <div class="bg-yellow-100 shadow-md m-5 mt-10 text-center flex flex-col justify-center items-center" style="height: 150px; width: 400px;">
             <h5 class="font-semibold">Online Payment</h5>
-            <button id="razorpay-payment-button" class="bg-yellow-900 px-5 h-10 rounded-md mt-5 text-xl text-white">Pay with Razorpay</button>
+            {% comment %} <button id="{% url onlinepayment ,id %}" class="bg-yellow-900 px-5 h-10 rounded-md mt-5 text-xl text-white">Pay with Razorpay</button> {% endcomment %}
+            <button id="razorpay-payment-button" class="bg-yellow-900 px-5 h-10 rounded-md mt-5 text-xl text-white">Pay with Razorpay</button> 
+
     </div>
     
-
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
     var options = {
@@ -21,7 +22,7 @@
             // Handle the success or failure here
             console.log(response);
             if (response.razorpay_payment_id) {
-                window.location.href = '{% url "order_confirmation" order_id=order.id %}?transaction_id=' + response.razorpay_payment_id;
+                window.location.href = '{% url "create_order" id=address.id %}?transaction_id=' + response.razorpay_payment_id;
                 } else {
                 alert('Payment failed. Please try again.');
                 }

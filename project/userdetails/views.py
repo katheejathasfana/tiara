@@ -12,6 +12,7 @@ from reportlab.pdfgen import canvas
 from datetime import datetime, date
 
 
+
 # Create your views here.
 @login_required(login_url='login')
 def profile(request):
@@ -28,10 +29,10 @@ def edit_profile(request):
             messages.error(request, "Enter a valid name")
             return redirect('edit_profile')
 
-        user.phone_Number = request.POST.get('phone_number', user.phone_Number)
+        user.phone_Number = request.POST.get('phone_Number', user.phone_Number)
 
-        if len(user.phone_Number) != 10:
-            messages.error(request, "Enter a valid phone number")
+        if not user.phone_Number.isdigit() or len(user.phone_Number) != 10:
+            messages.error(request, "Enter a valid 10-digit phone number without spaces")
             return redirect('edit_profile')
 
         user.date_of_birth = request.POST.get('date_of_birth', user.date_of_birth)

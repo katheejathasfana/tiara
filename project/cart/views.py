@@ -11,6 +11,7 @@ import razorpay
 from project.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
 from userdetails.models import *
+from django.urls import reverse
 
 @login_required(login_url='login')
 def cart(request):
@@ -159,6 +160,7 @@ def address_page(request):
 
 @login_required(login_url='login')
 def add_address(request):
+    current_url = request.path
     if request.method=='POST':
         
         fullname=request.POST.get("name",'')
@@ -177,19 +179,22 @@ def add_address(request):
         address=Address.objects.create(user=request.user,full_name=fullname,address=address,city=city,pincode=pincode,country=country,phone_No=phone_no)
         address.save()
 
-    if 'profile' in request.META.get('HTTP_REFERER'):
-    
-        return redirect('profile')
-    else:
-        return redirect('address')
+        
+        print(f"Current URL: {current_url}")
+        if 'profile' in current_url:
+            return redirect('profile')
+        else:
+            return redirect('address')
     
 @login_required(login_url='login')
 def remove_address(request,id):
+    current_url = request.path
     address=Address.objects.get(id=id)
     address.delete()
+
     
-    if 'profile' in request.META.get('HTTP_REFERER'):
-    
+    print(f"Current URL: {current_url}")
+    if 'profile' in current_url:
         return redirect('profile')
     else:
         return redirect('address')
@@ -240,7 +245,7 @@ def place_order(request,id):
     cart_items = CartItem.objects.all()
     cart=Cart.objects.get(user=user)
     cart.summarycart()
-    address=request.session.get('shipping_address')
+    address1=request.session.get('shipping_address')
     shipping_address = Shipping_address.objects.create(
         full_name=address.full_name,
         address=address.address,
@@ -259,7 +264,7 @@ def place_order(request,id):
         status='confirmed',
         payment_method='Cash On Delivery',
         discount=cart.discnt,
-        quantity=cart.quantity
+        # quantity=cart.quantity
     )
     order.save()
     cart.discount=0
@@ -279,9 +284,6 @@ def wallet_payment(request,id):
     address = Address.objects.get(id=id)
     print(address.id)
     cart=Cart.objects.get(user=user)
-    
-   
-   
     return render(request, 'user/walletpayment.html', {'cart': cart, 'address': address})
 
 @login_required(login_url='login')
@@ -325,7 +327,7 @@ def pay_wallet(request,id):
         cartitems.delete()
         return redirect('order_confirmation', order.id)
     messages.error(request,'Insufficient balance on your wallet')
-    return redirect('wallet_payment')
+    return redirect('wallet_payment',id)
     
 @login_required(login_url='login')
 def order_confirmation(request,order_id):
@@ -345,7 +347,12 @@ def order_confirmation(request,order_id):
 #             product.save()
     
 #     return redirect('orderdetails')
-        
+
+@login_required(login_url='login')
+def razor_pay(request,id):
+    address=Address.objects.get(id=id)
+    return render(request, 'user/onlinepayment.html', {'address': address})
+
 
 @login_required(login_url='login')
 def online_payment(request,id):
@@ -372,7 +379,28 @@ def online_payment(request,id):
         'payment_capture': 1  # Auto capture payment
     }
     clnt_order = client.order.create(data=payment)
+    return render(request, 'user/onlinepayment.html', {'address': address, 'clnt_order': clnt_order, 'cart':cart})
 
+
+    
+@login_required(login_url='login')
+def create_order(request,id):
+    address=Address.objects.get(id=id)
+    user=request.user
+    cart_items = CartItem.objects.all()
+    address = Address.objects.get(id=id)
+    cart=Cart.objects.get(user=user)
+    
+    cart.summarycart()
+    shipping_address = Shipping_address.objects.create(
+        full_name=address.full_name,
+        address=address.address,
+        city=address.city,
+        country=address.country,
+        pincode=address.pincode,
+        phone_No=address.phone_No,
+    )
+    # if cart_item.product.stock>=cart_item.product.qunatity:
     order = Order.objects.create(
         user=request.user,  
         shipping_address=shipping_address,
@@ -382,12 +410,13 @@ def online_payment(request,id):
         status='confirmed',
         payment_method='Online Payment',
         discount=cart.discnt
-    )
+        )
     for cart_item in cart_items:
         order_item=OrderItem.objects.create(order=order, variant=cart_item.variant, quantity=cart_item.quantity, product_price=cart_item.variant.price)
         product = order_item.variant
         product.stock -= order_item.quantity
         product.save()
-    cart_items.delete()
-    return render(request, 'user/onlinepayment.html', {'address': address, 'clnt_order': clnt_order, 'order': order, 'cart':cart})
-
+        cart_items.delete()
+    return redirect(order_confirmation,id)
+    
+   

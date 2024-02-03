@@ -27,14 +27,14 @@
         <!-- Name -->
         <div class="mb-4">
             <label for="name" class="block text-sm font-medium text-gray-600">Full Name</label>
-            <input type="text" id="name" name="name" value="{{address.full_name}}"
+            <input type="text" id="name" name="name" value="{{address.full_name}}" maxlength="10"
                 class="mt-1 p-2 border rounded-md w-full"  />
         </div>
 
         <!-- Street Address -->
         <div class="mb-4">
             <label for="address" class="block text-sm font-medium text-gray-600">Address</label>
-            <input type="text" id="address" name="address" value="{{address.address}}"
+            <input type="text" id="address" name="address" value="{{address.address}}" maxlength="25"
                 class="mt-1 p-2 border rounded-md w-full"  />
         </div>
 
@@ -42,7 +42,7 @@
         <div class="grid grid-cols-2 gap-4">
             <div class="mb-4">
                 <label for="city" class="block text-sm font-medium text-gray-600">City</label>
-                <input type="text" id="city" name="city" value="{{address.city}}"
+                <input type="text" id="city" name="city" value="{{address.city}}" maxlength="10"
                     class="mt-1 p-2 border rounded-md w-full"  />
             </div>
             <div class="mb-4">
@@ -55,13 +55,13 @@
         <!-- Country -->
         <div class="mb-4">
             <label for="country" class="block text-sm font-medium text-gray-600">Country</label>
-            <input type="text" id="country" name="country" value="{{address.country}}"
+            <input type="text" id="country" name="country" value="{{address.country}}" maxlength="10"
                 class="mt-1 p-2 border rounded-md w-full"  />
         </div>
 
         <div class="mb-4">
             <label for="phone" class="block text-sm font-medium text-gray-600">Phone Number</label>
-            <input type="number" id="phone" name="phone" value="{{address.phone_No}}" oninput="this.value = this.value.slice(0, 2)"
+            <input type="number" id="phone" name="phone" value="{{address.phone_No}}" oninput="this.value = this.value.slice(0, 10)"
                 class="mt-1 p-2 border rounded-md w-full"  />
         </div>
 
