@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-0ok==z9sh-#&d6v+amhxcu!5_gbucnt#mc8xsnb8v9imzklfwv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['tiaara.shop',]
 
 
 # Application definition
