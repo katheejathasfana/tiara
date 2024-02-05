@@ -26,7 +26,11 @@ SECRET_KEY = 'django-insecure-0ok==z9sh-#&d6v+amhxcu!5_gbucnt#mc8xsnb8v9imzklfwv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['tiaara.shop', '3.25.167.155']
+ALLOWED_HOSTS = []
+CSRF_TRUSTED_ORIGINS = ['https://tiaara.shop', 'https://www.tiaara.shop']
+CSRF_TRUSTED_ORIGINS = ['https://tiaara.shop']
+CSRF_USE_SESSIONS = True
+
 
 # Application definition
 
