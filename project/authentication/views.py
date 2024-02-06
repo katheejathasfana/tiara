@@ -86,9 +86,10 @@ def signup(request):
             messages.error(request, 'Email is already registered')
             return render(request, 'user/signup.html')
         
-        # if not is_strong_password(password):
-        #     messages.error(request,'password should be strong')
-        #     return render(request, 'user/signup.html')
+        if not is_strong_password(password):
+            messages.error(request,'password should be strong')
+            return render(request, 'user/signup.html')
+        
         if not email or '@' not in email:
             raise ValidationError('Please enter a valid email address.')
         
@@ -189,16 +190,14 @@ def verification(request):
                             wallet=Wallet.objects.get(user=provider)
                             wallet.balance+=referal_bonus
                             wallet.save()
-                            WalletTransaction.objects.create(user=provider, amount=referal_bonus, transaction_type='credit', transaction_details="referal bonus")
-                            messages.success(request,"Account created succesfully")
-                            user = authenticate(request, email=user.email, password=user.password)
-                            login(request, user)
+                            WalletTransaction.objects.create(user=provider, amount=referal_bonus, transaction_type='credit', transaction_details="referal bonus")  
                             return redirect('home')
                         except:
-                            messages.success(request,"Account created succesfully")
-                            user1 = authenticate(request, email=user.email, password=user.password)
-                            login(request, user1)
-                            return redirect('home')
+                           return redirect('home')
+
+                    # user = authenticate(request, email=user.email, password=user.password)
+                    # login(request, user)
+                   
                            
                    
                 else:
