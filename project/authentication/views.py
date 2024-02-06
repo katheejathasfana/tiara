@@ -185,15 +185,16 @@ def verification(request):
                     user.save()
                     if referal_code is not None:
                         referal_bonus=50
-                        try:
-                            provider=Custom_user.objects.get(referal_code=referal_code)
-                            wallet=Wallet.objects.get(user=provider)
-                            wallet.balance+=referal_bonus
-                            wallet.save()
-                            WalletTransaction.objects.create(user=provider, amount=referal_bonus, transaction_type='credit', transaction_details="referal bonus")  
-                            return redirect('home')
-                        except:
-                           return redirect('home')
+                        
+                        provider=Custom_user.objects.get(referal_code=referal_code)
+                        wallet=Wallet.objects.get(user=provider)
+                        wallet.balance+=referal_bonus
+                        wallet.save()
+                        WalletTransaction.objects.create(user=provider, amount=referal_bonus, transaction_type='credit', transaction_details="referal bonus")  
+                        return redirect('home')
+                    else:
+                        return redirect('home')
+                       
 
                     # user = authenticate(request, email=user.email, password=user.password)
                     # login(request, user)
