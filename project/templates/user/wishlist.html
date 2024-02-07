@@ -56,7 +56,7 @@
                 Out of stock</button>
                   {% else %}
                 <button class="text-md font-semibold text-white bg-yellow-900 rounded-lg px-4 py-2" >
-                    <a href="{% url 'add_to_cart' list.variant.id %}">Move to Bag</a>
+                    <a href="{% url 'add_to_cart' list.variant.id %}?source=wishlist">Move to Bag</a>
                 </button>
                 {% endif %}
             </div>

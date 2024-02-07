@@ -28,6 +28,8 @@ def cart(request):
 
 @login_required(login_url='login')
 def add_to_cart(request, id):
+    current_url = request.path
+    
     user = request.user
     variant = get_object_or_404(Variant, id=id)
     cart, created = Cart.objects.get_or_create(user=user, is_paid=False)
@@ -50,8 +52,12 @@ def add_to_cart(request, id):
             messages.success(request, 'Item added to cart')
     else:
         messages.error(request, "Product out of stock")
-
-    return redirect('product_details', variant.product.id)
+      
+    print(current_url)  
+    if 'wishlist' in current_url:
+        return redirect('wishlist')
+    else:
+        return redirect('product_details', variant.product.id)
 
 
 @login_required(login_url='login')

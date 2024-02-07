@@ -53,11 +53,12 @@ def signin(request):
 
             if user is not None and user.is_verified==True and user.is_active==True:
                 login(request, user)
+                return redirect('home')
             
             else:
                 messages.error(request,'Incorrect Username or Password')
             
-            return redirect('login')
+                return redirect('login')
             
         
         except Custom_user.DoesNotExist:
@@ -185,22 +186,22 @@ def verification(request):
                     user.save()
                     if referal_code is not None:
                         referal_bonus=50
-                        
-                        provider=Custom_user.objects.get(referal_code=referal_code)
-                        wallet=Wallet.objects.get(user=provider)
-                        wallet.balance+=referal_bonus
-                        wallet.save()
-                        WalletTransaction.objects.create(user=provider, amount=referal_bonus, transaction_type='credit', transaction_details="referal bonus")  
-                        return redirect('home')
-                    else:
-                        return redirect('home')
+                        try:
+                            provider=Custom_user.objects.get(referal_code=referal_code)
+                            wallet=Wallet.objects.get(user=provider)
+                            wallet.balance+=referal_bonus
+                            wallet.save()
+                            WalletTransaction.objects.create(user=provider, amount=referal_bonus, transaction_type='credit', transaction_details="referal bonus")  
+                            messages.success(request,"Account created successfully")
+                            return redirect('home')
+                        except:
+                            return redirect('home')
                        
 
                     # user = authenticate(request, email=user.email, password=user.password)
                     # login(request, user)
                    
                            
-                   
                 else:
                     messages.error(request,"Otp is Inccorect")
                     return redirect('verification')
