@@ -74,10 +74,14 @@
                Out of Stock
            </button>
            {% else %}
+           <form method="post" action="{% url 'add_to_cart' variant.id %}">
+            {% csrf_token %}
+            <input type="hidden" name="source" value="product_detail">
+            <button class="px-5 py-2 bg-yellow-900 text-white rounded-md font-semibold " type="submit">Add to Cart</button>
+          </form>
             
-                <button class="px-5 py-2 bg-yellow-900 text-white rounded-md font-semibold ">
-                     <a href="{% url 'add_to_cart' variant.id %}">Add to Cart</a> 
-                </button>
+               
+                    
             {% endif %}
                  <a href="{% url 'addwishlist' variant.id %}">
                     <button class="px-3 py-2 border border-black text-black rounded-md font-semibold hover:bg-yellow-900 hover:text-white">Wishlist <i class="fa-regular fa-heart"></i></button></a>

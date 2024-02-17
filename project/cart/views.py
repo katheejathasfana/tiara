@@ -53,12 +53,11 @@ def add_to_cart(request, id):
     else:
         messages.error(request, "Product out of stock")
       
-    print(current_url)  
-    if 'wishlist' in current_url:
+    source = request.POST.get('source')
+    if source == 'wishlist':
         return redirect('wishlist')
     else:
         return redirect('product_details', variant.product.id)
-
 
 @login_required(login_url='login')
 def remove_item(request, item_id):
@@ -166,7 +165,8 @@ def address_page(request):
 
 @login_required(login_url='login')
 def add_address(request):
-    current_url = request.path
+    referer = request.META.get('HTTP_REFERER')
+    print(referer)
     if request.method=='POST':
         
         fullname=request.POST.get("name",'')
@@ -177,33 +177,38 @@ def add_address(request):
         phone_no=request.POST.get('phone','')
         if  not fullname or not address or not city or not pincode or not country or not phone_no:
             messages.error(request,"fill the all  fields")
-            return redirect('address')
+            if source == 'profile':
+                return redirect('profile')
+            else:
+                return redirect('address')
         elif fullname.isspace() or address.isspace() or city.isspace() or country.isspace() or len(phone_no)!=10:
             messages.error(request,"Enter the valid inputs")
-            return redirect('address')
+            if source == 'profile':
+                return redirect('profile')
+            else:
+                return redirect('address')
                             
         address=Address.objects.create(user=request.user,full_name=fullname,address=address,city=city,pincode=pincode,country=country,phone_No=phone_no)
         address.save()
-
-        
-        print(f"Current URL: {current_url}")
-        if 'profile' in current_url:
+        source = request.POST.get('source')
+        if source == 'profile':
             return redirect('profile')
         else:
             return redirect('address')
+        
     
 @login_required(login_url='login')
 def remove_address(request,id):
     current_url = request.path
     address=Address.objects.get(id=id)
     address.delete()
-
-    
-    print(f"Current URL: {current_url}")
-    if 'profile' in current_url:
+    source = request.POST.get('source')
+    if source == 'profile':
         return redirect('profile')
     else:
         return redirect('address')
+    
+   
     
 @login_required(login_url='login')
 def get_address(request,id):
@@ -423,6 +428,6 @@ def create_order(request,id):
         product.stock -= order_item.quantity
         product.save()
         cart_items.delete()
-    return redirect(order_confirmation,id)
+    return redirect(order_confirmation,  order.id)
     
    

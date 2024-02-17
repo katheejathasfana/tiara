@@ -91,14 +91,15 @@
     </div>
 
     {% else %}
-    
-        <h2 class="text-2xl font-bold flex justify-center items-center">Your Shopping Bag is empty</h2>
+    <div class='mt-5 justify-items-center' style="height:380px;">
+        <h2 class="text-2xl font-bold flex justify-center items-center pt-19">Your Shopping Bag is empty</h2>
         <p class="flex justify-center items-center font-semibold text-gray-700 mt-3">This feels too light! Go on, add all your favourites</p>
         <div class="flex justify-center items-center m-10 " style="margin-bottom:100px ;">
         <a href="{% url 'products' %}">
             <button class="mt-6 w-full rounded-md bg-yellow-900 py-3 px-5 font-medium text-white">Go Shopping</button>
         </a>
     </div>
+  </div>
 
    {% endif %}
 

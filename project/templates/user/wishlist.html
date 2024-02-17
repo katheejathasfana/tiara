@@ -29,8 +29,8 @@
             <a href="#"><i class="fa-solid fa-xmark absolute top-0 right-0"></i></a>
 
             <a href="{% url 'product_details' list.variant.id %}">
-                <div class="m-10 max-w-xs overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md transition-transform transform hover:scale-105" style="width: 150px; height: 300px;">
-                    <img class="object-cover" src="{{ list.variant.img1.url }}" alt="product image" style="height: 150px; width: 200px; align-items: center;" />
+                <div class="m-10 max-w-xs overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md transition-transform transform hover:scale-105" style="width: 200px; height: 340px;">
+                    <img class="object-cover" src="{{ list.variant.img1.url }}" alt="product image" style="height: 200px; width: 200px; align-items: center;" />
                     <a href="{% url 'removewishlist' list.variant.id %}"><i class="fa-solid fa-xmark absolute top-1 right-1"></i></a>
                     
                     <div class="mt-2">
@@ -55,9 +55,12 @@
                 <button class="text-md font-semibold text-white bg-yellow-900 rounded-lg px-4 py-2" >
                 Out of stock</button>
                   {% else %}
-                <button class="text-md font-semibold text-white bg-yellow-900 rounded-lg px-4 py-2" >
-                    <a href="{% url 'add_to_cart' list.variant.id %}?source=wishlist">Move to Bag</a>
-                </button>
+                  <form method="post" action="{% url 'add_to_cart' list.variant.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="source" value="wishlist">
+                    <button class="px-5 py-2 bg-yellow-900 text-white rounded-md font-semibold " type="submit">Add to Cart</button>
+                  </form>
+                
                 {% endif %}
             </div>
             </div>
@@ -74,9 +77,9 @@
  {% else %}
  
  <div class="flex flex-col justify-center items-center" style="width:75%;">
-    <h2 class="text-2xl font-bold mb-3 ">No Item in Wishlist</h2>
-    <p class="font-semibold text-gray-700 mb-3">Add new, Buy Later</p>
-    <p class="font-semibold text-gray-700 mb-3">Save Your Favourite Items Here!</p>
+    <h2 class="text-2xl font-bold text-white mb-3 ">No Item in Wishlist</h2>
+    <p class="font-semibold text-white  mb-3">Add new, Buy Later</p>
+    <p class="font-semibold text-white mb-3">Save Your Favourite Items Here!</p>
     <div class="mb-10">
         <a href="{% url 'products' %}">
             <button class="w-full rounded-md bg-yellow-900 py-3 px-5 font-medium text-white">Go Shopping</button>

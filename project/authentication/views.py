@@ -20,16 +20,6 @@ import random
 import string
 from userdetails.models import *
 
-# def calculate_discount_price(product):
-#     if sproduct:
-#         product_offer = self.product.offer
-#         if product_offer and product_offer.expire_date >= date.today():
-#             return round(float(self.price) - (float(self.price) * product_offer.discount_prcnt / 100))
-#         elif self.product.category:
-#             category_offer = self.product.category.offer
-#             if category_offer and category_offer.expire_date >= date.today():
-#                 return round(float(self.price) - (float(self.price) * category_offer.discount_prcnt / 100))
-#         return self.price
 
 def home(request):
     categories=Category.objects.all()
@@ -146,7 +136,6 @@ def is_strong_password(password):
 def resend_otp(request):
     email=request.session.get('email')
     user=Custom_user.objects.get(email=email)
-    # if user.otp_created_at+user.otp_exioriy<timezone.now():
     new_otp=randint(100000,999999)
     user.otp_created_at = datetime.now()
     user.otp=new_otp
@@ -161,60 +150,52 @@ def resend_otp(request):
 
 
 def verification(request):
-    email=request.session.get('email')
+    email = request.session.get('email')
     print(email)
     otp_time_limit = timedelta(minutes=1)
     current_time = datetime.now()
     print(current_time)
-    # otp_created_at=timezone.make_aware(otp_created_at, timezone.get_default_timezone())
     current_time = timezone.make_aware(current_time, timezone.get_default_timezone())
     if request.method == 'POST':
         otp_entered = "".join(request.POST.get(f'otp{i}', '') for i in range(1, 7))
-        print(otp_entered)
-        print(type(otp_entered))
-        user=Custom_user.objects.get(email=email)
-        print(type(user.otp))
-        print(user.otp)
-        referal_code=request.session.get('referal_code')
-        print(referal_code)
-        if user:
-           
-            if current_time - user.otp_created_at <= otp_time_limit:
-                if otp_entered==str(user.otp):
-                    user.is_verified=True
-                    user.referal_code=generate_referalcode()
-                    user.save()
-                    if referal_code is not None:
-                        referal_bonus=50
+        signup_user = Custom_user.objects.get(email=email)  # Potential source of AttributeError
+        referal_code = request.session.get('referal_code')
+        if signup_user:  # Check if signup_user is not None
+            if current_time - signup_user.otp_created_at <= otp_time_limit:  # Ensure signup_user is not None before accessing its attributes
+                if otp_entered == str(signup_user.otp):
+                    signup_user.is_verified = True
+                    signup_user.referal_code = generate_referalcode()
+                    signup_user.save()
+                    if referal_code:
+                        referal_bonus = 50
                         try:
-                            provider=Custom_user.objects.get(referal_code=referal_code)
-                            wallet=Wallet.objects.get(user=provider)
-                            wallet.balance+=referal_bonus
+                            provider = Custom_user.objects.get(referal_code=referal_code)
+                            wallet = Wallet.objects.get(user=provider)
+                            wallet.balance += referal_bonus
                             wallet.save()
                             WalletTransaction.objects.create(user=provider, amount=referal_bonus, transaction_type='credit', transaction_details="referal bonus")  
-                            messages.success(request,"Account created successfully")
-                            return redirect('home')
+                            # user1 = authenticate(request, email=signup_user.email, password=signup_user.password)
+                            # login(request, user1)
+                            messages.success(request, "Account created successfully")
+                            return redirect('login')
                         except:
-                            return redirect('home')
-                       
-
-                    # user = authenticate(request, email=user.email, password=user.password)
-                    # login(request, user)
-                   
-                           
+                            # user1 = authenticate(request, email=signup_user.email, password=signup_user.password)
+                            # login(request, user1)
+                            return redirect('login')
+                    else:
+                        # user1 = authenticate(request, email=signup_user.email, password=signup_user.password)
+                        # login(request, user1)
+                        return redirect('login')                            
+                
                 else:
-                    messages.error(request,"Otp is Inccorect")
+                    messages.error(request, "Otp is Incorrect")
                     return redirect('verification')
             else:
-                user.otp=0
-                user.save()
-                messages.error(request,"otp expired")
+                signup_user.otp = 0
+                signup_user.save()
+                messages.error(request, "OTP expired")
                 return redirect('verification')
-
-
-    return render(request,'user/verification.html')
-
-
+    return render(request, 'user/verification.html')
 
 
 def forgetpassword(request):
@@ -275,9 +256,9 @@ def products(request):
     products=Product.objects.exclude(variants__isnull=True) 
     order_by = request.GET.get('order_by', 'default')
     if order_by == 'low_to_high':
-        products = products.annotate(min_price=Min('variants__price')).order_by('min_price')
+        products = products.annotate(min_price=Min('variants__discount_price')).order_by('min_price')
     elif order_by == 'high_to_low':
-        products = products.annotate(max_price=Min('variants__price')).order_by('-max_price')
+        products = products.annotate(max_price=Min('discount_price')).order_by('-max_price')
     return render(request,'user/products.html',{'products':products})
 
 

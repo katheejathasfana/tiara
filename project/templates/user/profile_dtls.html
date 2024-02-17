@@ -66,8 +66,15 @@
             {% for i in user.addresses.all %}
             <div class="bg-yellow-100 px-4 py-4 h-auto m-5" style="width:300px">
                 <div class="flex items-center space-x-4 align-items: flex-end">
-                    <a href="{% url 'get_address' i.id %}?source=profile"><i class="fa fa-edit block text-black" type="button"></i></a>
-                    <a href="{% url 'remove_address' i.id %}?source=profile"><i class="fa fa-trash"></i></a>
+                    <a href="{% url 'get_address' i.id %}"><i class="fa fa-edit block text-black" type="button"></i></a>
+                    
+                    <form method="post" action="{% url 'remove_address' i.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="source" value="profile">
+                        <button type="submit"><i class="fa fa-trash"></i></button>
+                      </form>
+                        
+            
                 </div>
 
             <p>{{i.full_name }}</p>
@@ -153,10 +160,9 @@ class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 
                 </div>
 
                 <!-- Submit Button -->
-                <button type="submit" class="bg-yellow-900 text-white px-4 py-2 rounded-md ">
-                    Save Address
-                </button>
-            </form>
+                <input type="hidden" name="source" value="profile">
+                    <button class="px-5 py-2 bg-yellow-900 text-white rounded-md font-semibold " type="submit">Save Address</button>
+                </form>
             
         </div>
     </div>

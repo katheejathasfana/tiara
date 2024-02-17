@@ -17,14 +17,15 @@
         <tbody>
             {% if orders %} 
                 {% for order in orders %}
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-black font-semibold text-center">
+                    <tr class=" m-3 bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-black font-semibold text-center">
                         <td class="px-4 py-2">{{ order.id }}</td>
                         <td class="px-4 py-2">{{ order.user.name }}</td>
                         <td class="px-4 py-2">{{ order.order_date }}</td>
                         <td class="px-4 py-2">{{ order.payment_method }}</td>
                         <td class="px-4 py-2">{{ order.Grand_total }}</td>
                         <td class="px-4 py-2 ">
-                            {% if order.status != "cancelled" %}
+                            {% if order.status != "cancelled" and order.status != "delivered" %}
+
                                 <form method="post" action="{% url 'change_order_status' order.id %}">
                                     {% csrf_token %}
                                     <select name="new_status">
@@ -36,7 +37,8 @@
                                     <button type="submit">Change Status</button>
                                 </form>
                             {% else %}
-                                {{ order.status }}
+                                {{ order.status|capfirst }}
+                        
                             {% endif %}
                         </td>
                         
@@ -49,6 +51,25 @@
                 {% endfor %}
             {% endif %}
         </tbody>
+        <div class="flex justify-center mt-5">
+            <div class="pagination">
+              <span class="step-links">
+                  {% if orders.has_previous %}
+                  <a href="?page=1"class="m-4 font-semibold">&laquo; First</a>
+                  <a href="?page={{ orders.previous_page_number }}" class="m-4 font-semibold">Previous</a>
+                  {% endif %}
+          
+                  <span class="current">
+                      Page {{ orders.number }} of {{ orders.paginator.num_pages }}.
+                  </span>
+          
+                  {% if orders.has_next %}
+                  <a href="?page={{ orders.next_page_number }}" class="m-4 font-semibold">Next</a>
+                  <a href="?page={{ ordeers.paginator.num_pages }}" class="m-4 font-semibold">Last &raquo;</a>
+                  {% endif %}
+              </span>
+          </div>
+      </div>
     </table>
     
 </main>

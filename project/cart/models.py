@@ -72,10 +72,10 @@ class Order(models.Model):
     payment_status=models.IntegerField(choices=payment_status_choices, default=3)
     
     ORDER_STATUS_CHOICES = [   
-        ('confirmed', 'Confirmed'),
-        ('shipped', 'Shipped'),
-        ('cancelled', 'Cancelled'),
-        ('delivered', 'Delivered'),
+        ('Confirmed', 'Confirmed'),
+        ('Shipped', 'Shipped'),
+        ('Cancelled', 'Cancelled'),
+        ('Delivered', 'Delivered'),
     ]
     status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default='confirmed')
 

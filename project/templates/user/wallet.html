@@ -5,23 +5,20 @@
 
   {% if wallets %}
  
-  <div class="container mx-auto mt-8">
+  <div class="container mx-auto p-5 rounded-md mt-5 bg-white" style="width:60%;">
     <h2 class="text-2xl font-bold mb-4">My Wallet</h2>
 
-    <div class="bg-yellow-100 p-4 rounded-md shadow-md max-w-screen-md" >
+    <div class="bg-yellow-100 p-4 rounded-md shadow-md max-w-screen-md " >
   
 
   <p class="text-lg mb-2 font-semibold">Current Balance: Rs {{wallets.balance }}</p>
-
- 
-
 
   {% endif %}
 </div>
   <h1 class="text-lg font-semibold">Wallet Transactions</h1>
    
             {% for transaction in transactions %}
-            <div class="w-3/4 m-5 bg-gray-100 font-semibold shadow-md flex justify-between">
+            <div class="w-3/4 m-5 bg-gray-300 font-semibold shadow-md flex justify-between" style="width:700px; height=80px;">
               <div>
               <p class="ml-5">{{ transaction.timestamp }}</p>
               <p class="font-semibold ml-5 ">{{order.id}} {{ transaction.transaction_details }}</p>
@@ -36,12 +33,27 @@
                   {% endif %}
               </div>
           </div>
-          
-          
-        
-            {% endfor %}
-        </tbody>
-    </table>
+        {% endfor %}
+        <div class="flex justify-center mt-5">
+        <div class="pagination">
+          <span class="step-links">
+              {% if transactions.has_previous %}
+              <a href="?page=1"class="m-4 font-semibold">&laquo; First</a>
+              <a href="?page={{ transactions.previous_page_number }}" class="m-4 font-semibold">Previous</a>
+              {% endif %}
+      
+              <span class="current">
+                  Page {{ transactions.number }} of {{ transactions.paginator.num_pages }}.
+              </span>
+      
+              {% if transactions.has_next %}
+              <a href="?page={{ transactions.next_page_number }}" class="m-4 font-semibold">Next</a>
+              <a href="?page={{ transactions.paginator.num_pages }}" class="m-4 font-semibold">Last &raquo;</a>
+              {% endif %}
+          </span>
+      </div>
   </div>
 </div>
+</div
+
   {% endblock content%}

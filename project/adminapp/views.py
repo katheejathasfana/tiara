@@ -8,12 +8,14 @@ from authentication.models import *
 from project import settings
 from userdetails.models import Wallet,  WalletTransaction
 from .models import *
+from django.db import transaction
 from cart.models import *
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control,never_cache
 from django.db.models import Sum,Count
 from datetime import datetime
 from django.contrib.admin.views.decorators import staff_member_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 @never_cache
@@ -553,6 +555,18 @@ def delete_product(request,id):
 @login_required(login_url='admin_login')
 def order(request):
     orders=Order.objects.all().order_by('-id')
+    paginator = Paginator(orders, 10)  # Show 10 transactions per page
+    page_number = request.GET.get('page')
+    
+    try:
+        orders = paginator.page(page_number)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        orders = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        orders = paginator.page(paginator.num_pages)
+    
     return render(request ,'admin/order.html',{'orders': orders})
 
 @staff_member_required(login_url='admin_login')    
@@ -567,21 +581,27 @@ def order_view(request,id):
 @login_required(login_url='admin_login')
 def change_order_status(request, order_id):
     order = get_object_or_404(Order, id=order_id)
-
     if request.method == 'POST':
         new_status = request.POST.get('new_status')
         order.status = new_status
+        order.save()
         if order.status=='cancelled':
             order.save()
-        if order.payment_method=='Online payment' or 'Wallet':
-            refund_amount=order.Grand_total
-            user=order.user
-            wallet, created = Wallet.objects.get_or_create(user=user)
-            wallet.balance+=refund_amount
-            WalletTransaction.objects.create(user=request.user, amount=refund_amount, transaction_type='credit', transaction_details= "Tiara"+ str(order.id) + " order cancelled")
+            if order.payment_method=='Online payment' or 'Wallet':
+                refund_amount=order.Grand_total
+                user=order.user
+                print(user)
+                wallet = Wallet.objects.get(user=user)
+                wallet.balance=wallet.balance + refund_amount
+                print(wallet.balance)
+                wallet.save()
+            WalletTransaction.objects.create(user=order.user, amount=refund_amount, transaction_type='credit', transaction_details= "Tiara"+ str(order.id) + " order cancelled")
 
-            
-            wallet.save()
+            order_items = OrderItem.objects.filter(order=order)
+            for order_item in order_items:
+                product = order_item.variant
+                product.stock += order_item.quantity
+                product.save()
         return redirect('order') 
     return render(request, 'admin/order.html', {'order': order})
 

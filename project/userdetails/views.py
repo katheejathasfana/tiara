@@ -10,6 +10,8 @@ from django.contrib import messages
 from django.http import HttpResponse
 from reportlab.pdfgen import canvas
 from datetime import datetime, date
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 
 
@@ -64,6 +66,17 @@ def edit_profile(request):
 def order(request):
     user=request.user
     orders=Order.objects.filter(user=user).order_by('-id')
+    paginator = Paginator(orders, 5)  # Show 10 transactions per page
+    page_number = request.GET.get('page')
+    
+    try:
+        orders = paginator.page(page_number)
+    except PageNotAnInteger:
+        
+        orders = paginator.page(1)
+    except EmptyPage:
+        
+        orders = paginator.page(paginator.num_pages)
     return render(request, 'user/order.html',{'orders': orders})
 
 @login_required(login_url='login')
@@ -108,25 +121,35 @@ def addwishlist(request, variant_id):
     if not wishlist_item:
         
         Wishlist.objects.create(user=request.user, variant=variant)
-        return redirect('wishlist')
+        return redirect('product_details', variant.product.id)
     else:
         messages.warning(request, "This item is already in your wishlist.")
-
-        return redirect('wishlist')
+        return redirect('product_details', variant.product.id)
 
 @login_required(login_url='login') 
-def removewishlist(request,product_id):
-    product = get_object_or_404(Product, id=product_id)
-    wishlist_item = get_object_or_404(Wishlist, user=request.user, product=product)
+def removewishlist(request,id):
+    variant = get_object_or_404(Variant, id=id)
+    wishlist_item = get_object_or_404(Wishlist, user=request.user, variant=variant)
     wishlist_item.delete()
     return redirect('wishlist')
 
+@login_required(login_url='login') 
 def wallet(request):
+    wallets = Wallet.objects.get(user=request.user)
+    all_transactions = WalletTransaction.objects.filter(user=request.user).order_by('-timestamp')
+    
+    paginator = Paginator(all_transactions, 5)  # Show 10 transactions per page
+    page_number = request.GET.get('page')
+    
     try:
-        wallets = Wallet.objects.get(user=request.user)
-    except Wallet.DoesNotExist:
-        wallets = 0
-    transactions=WalletTransaction.objects.filter(user=request.user)
+        transactions = paginator.page(page_number)
+    except PageNotAnInteger:
+        
+        transactions = paginator.page(1)
+    except EmptyPage:
+        
+        transactions = paginator.page(paginator.num_pages)
+    
     return render(request, 'user/wallet.html', {'wallets': wallets, 'transactions':transactions})
 
 @login_required(login_url='login')
