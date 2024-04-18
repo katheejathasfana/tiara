@@ -5,20 +5,24 @@
 
   {% if wallets %}
  
-  <div class="container mx-auto p-5 rounded-md mt-5 bg-white" style="width:60%;">
+  <div class="container mx-auto p-5 rounded-md mt-5 bg-white" style="width:60%; height:700px">
     <h2 class="text-2xl font-bold mb-4">My Wallet</h2>
 
     <div class="bg-yellow-100 p-4 rounded-md shadow-md max-w-screen-md " >
   
 
-  <p class="text-lg mb-2 font-semibold">Current Balance: Rs {{wallets.balance }}</p>
+      <div class="flex flex-col">
+        <p class="text-lg mb-2 font-semibold">Wallet Amount: <span class="ml-auto">Rs {{wallets.balance}}</span></p>
+        <p class="text-lg mb-2 font-semibold">Current Balance: <span class="justify-end">Rs {{wallets.balance}}</span></p>
+    </div>
+    
 
   {% endif %}
 </div>
   <h1 class="text-lg font-semibold">Wallet Transactions</h1>
    
             {% for transaction in transactions %}
-            <div class="w-3/4 m-5 bg-gray-300 font-semibold shadow-md flex justify-between" style="width:700px; height=80px;">
+            <div class="w-3/4 m-5 border border-gray-100 font-semibold shadow-md flex justify-between" style="width:900px; height:70px;">
               <div>
               <p class="ml-5">{{ transaction.timestamp }}</p>
               <p class="font-semibold ml-5 ">{{order.id}} {{ transaction.transaction_details }}</p>
@@ -54,6 +58,6 @@
       </div>
   </div>
 </div>
-</div
+</div>
 
   {% endblock content%}
