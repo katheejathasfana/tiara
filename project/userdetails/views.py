@@ -86,7 +86,7 @@ def cancel_order(request, order_id):
         if order.status not in ["cancelled", "delivered"]:
             order.status="cancelled"
             order.save()
-        if order.payment_method=='Online payment' or 'Wallet':
+        if order.payment_status==1:
             refund_amount=order.Grand_total
             user=request.user
             wallet, created = Wallet.objects.get_or_create(user=user)

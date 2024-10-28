@@ -12,6 +12,9 @@ from project.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
 from userdetails.models import *
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse, HttpResponseBadRequest
+
 
 @login_required(login_url='login')
 def cart(request):
@@ -392,10 +395,43 @@ def online_payment(request,id):
     clnt_order = client.order.create(data=payment)
     return render(request, 'user/onlinepayment.html', {'address': address, 'clnt_order': clnt_order, 'cart':cart})
 
+@csrf_exempt
+def payment_verification(request):
+    if request.method == "POST":
+        # Extract payment details from the POST request
+        razorpay_payment_id = request.POST.get('razorpay_payment_id')
+        razorpay_order_id = request.POST.get('razorpay_order_id')
+        razorpay_signature = request.POST.get('razorpay_signature')
+
+        # Verify the payment using Razorpay's utility function
+        client = razorpay.Client(auth=(settings.KEY, settings.SECRET))
+        params_dict = {
+            'razorpay_order_id': razorpay_order_id,
+            'razorpay_payment_id': razorpay_payment_id,
+            'razorpay_signature': razorpay_signature
+        }
+
+        try:
+            # Verify the signature to ensure payment integrity
+            client.utility.verify_payment_signature(params_dict)
+
+            # Once verified, update your payment records (e.g., mark the order as paid)
+            # Here you would update your cart or order model to reflect payment success
+            # cart.order_status = 'PAID'
+            # cart.save()
+
+            # Return success response to the frontend
+            redirect(create_order)
+        except razorpay.errors.SignatureVerificationError:
+            # In case verification fails, return an error
+            return JsonResponse({'status': 'Payment verification failed'}, status=400)
+    else:
+        return HttpResponseBadRequest("Invalid request")
 
     
 @login_required(login_url='login')
 def create_order(request,id):
+
     address=Address.objects.get(id=id)
     user=request.user
     cart_items = CartItem.objects.all()

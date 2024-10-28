@@ -24,14 +24,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-0ok==z9sh-#&d6v+amhxcu!5_gbucnt#mc8xsnb8v9imzklfwv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['tiaara.shop', 'www.tiaara.shop', '127.0.0.1', '3.25.167.155']
+ALLOWED_HOSTS = ['tiaara.herokuapp.com']
 
 
-CSRF_TRUSTED_ORIGINS = ['https://tiaara.shop', 'https://www.tiaara.shop']
-CSRF_TRUSTED_ORIGINS = ['https://tiaara.shop']
-CSRF_USE_SESSIONS = True
+# CSRF_TRUSTED_ORIGINS = ['https://tiaara.shop', 'https://www.tiaara.shop']
+# CSRF_TRUSTED_ORIGINS = ['https://tiaara.shop']
+# CSRF_USE_SESSIONS = True
 
 
 # Application definition
@@ -56,6 +56,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -89,12 +90,12 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
@@ -134,6 +135,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
+
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS=[BASE_DIR / "static"]
@@ -178,3 +180,8 @@ MEDIA_URL = '/media/'
 
 KEY = 'rzp_test_uxJYg29NA4iFLt'
 SECRET = 'l7lYgiPEXWEZZwGasNxSKL7n'
+
+import dj_database_url
+DATABASES = {
+    'default': dj_database_url.config(conn_max_age=600)
+}

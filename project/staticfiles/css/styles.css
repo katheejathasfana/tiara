@@ -1,0 +1,80 @@
+/* #tiara-head{
+    width: 72px;
+    margin-left: 650px;
+    text-align: center;
+    font-family: Georgia;
+    font-size: xx-large;
+}
+
+li{
+    font-weight:500;
+    padding-left: 30px;
+    
+}
+
+.add{
+    height:500px;
+    width:60%;
+    margin-top:150px;
+    margin-left:150px ;
+
+}
+.main_right{
+    width:30%;
+    height:500px;
+    background-color:#9A7659;
+    
+    padding: 0;
+
+    
+}    
+.form{
+    align-items: center;
+    width:600px;
+}
+.login{
+    align-items: center;
+    width:500px
+}
+
+.image1{
+    margin-top:75px;
+    margin-left:200px;
+    position: absolute;
+   
+}
+
+.image2{
+    margin-top: 150px;
+    margin-left:250px;
+}
+
+
+footer{
+    height:200px;
+    width:100%;
+    background-color: #9A7659;
+}
+
+.collections {
+    margin:150px;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    font-size: medium;
+    padding-left:100px ;
+    margin-top: 0px;
+
+}
+.collections div {
+    display: inline-block;
+    margin:50px;  /* Adjust this value to control the spacing between images */
+}
+h5{
+    text-align: center;
+    color: #000000;
+} */
+.custom-bg-color {
+    background-color: #9A7659;
+  }
