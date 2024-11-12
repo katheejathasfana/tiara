@@ -1,9 +1,9 @@
-{% extends 'list.html' %} {% block title %} Product {% endblock title %} {% block content %}
+{% extends 'list.html' %} {% block title %} Orders {% endblock title %} {% block content %}
 
 <main class="ml-60 pt-16 max-h-screen overflow-auto">
     <h1 class="text-xl font-semibold text-center">Order Management</h1>
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-        <thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 font-semibold">
+    <table class="w-full text-sm text-left rtl:text-right ">
+        <thead class="text-xs text-gray-50 bg-gray-50 dark:bg-gray-700 font-semibold">
             <tr class="font-semibold text-center">
                 <th scope="col" class="px-6 py-3" style="width: 8%;">Id</th>
                 <th scope="col" class="px-6 py-3" style="width: 15%;">Name</th>
@@ -17,7 +17,7 @@
         <tbody>
             {% if orders %} 
                 {% for order in orders %}
-                    <tr class=" m-3 bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-black font-semibold text-center">
+                    <tr class=" m-3 border-b dark:bg-gray-800 dark:border-gray-700 text-gray-50 font-semibold text-center">
                         <td class="px-4 py-2">{{ order.id }}</td>
                         <td class="px-4 py-2">{{ order.user.name }}</td>
                         <td class="px-4 py-2">{{ order.order_date }}</td>
@@ -26,7 +26,7 @@
                         <td class="px-4 py-2 ">
                             {% if order.status != "cancelled" and order.status != "delivered" %}
 
-                                <form method="post" action="{% url 'change_order_status' order.id %}">
+                                <form method="post"  action="{% url 'change_order_status' order.id %}">
                                     {% csrf_token %}
                                     <select name="new_status">
                                         <option value="confirmed" {% if order.status == 'confirmed' %}selected{% endif %}>Confirmed</option>
@@ -44,7 +44,7 @@
                         
                         <td class="px-4 py-4">
                             <a href="{% url 'order_view' order.id %}">
-                                <button class="border border-grey-700 px-4 rounded-lg">view</button>
+                                <button class="border border-grey-700 px-4 rounded-lg bg-white text-gray-900">view</button>
                             </a>
                         </td>
                     </tr>

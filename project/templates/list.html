@@ -12,7 +12,7 @@
       defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
 
-    {% block title %}<title>Dashboard</title>{% endblock title %}
+  <title>{% block title %}Dashboard{% endblock title %}</title>
   </head>
   <body>
     <body class="relative bg-yellow-50 overflow-hidden max-h-screen">
@@ -74,7 +74,7 @@
             <li>
               <a href="{% url 'coupons' %}" class="flex hover:bg-yellow-50 rounded-xl font-semibold text-sm text-gray-900 py-3 px-4
                   {% if active_menu == 'Users' %} bg-yellow-900 {% endif %}">
-                  <i class="fa-solid fa-cart-shopping ext-xl mr-5"></i>
+                  <i class="fa fa-gift mr-5"></i>
                   Coupon
               </a>
           </li>
