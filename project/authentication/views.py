@@ -19,12 +19,14 @@ from django.db.models import Min
 import random
 import string
 from userdetails.models import *
+from django.views.decorators.cache import never_cache
 
-
+@never_cache
 def home(request):
     categories=Category.objects.all()
     return render(request,'user/Home.html',{'categories': categories})
 
+@never_cache
 def signin(request):
     if request.user.is_authenticated:
         return redirect('home')
@@ -43,6 +45,7 @@ def signin(request):
 
             if user is not None and user.is_verified==True and user.is_active==True:
                 login(request, user)
+            
                 return redirect('home')
             
             else:
@@ -246,14 +249,14 @@ def resetpassword(request,email):
             return redirect('login')
         return render(request, 'user/resetpassword.html', {'email':email})
         
-        
+@never_cache       
 def signout(request):
     logout(request)
     return redirect('login')
 
 
 def products(request):
-    products=Product.objects.exclude(variants__isnull=True) 
+    products = Product.objects.filter(variants__isnull=False).distinct()
     order_by = request.GET.get('order_by', 'default')
     if order_by == 'low_to_high':
         products = products.annotate(min_price=Min('variants__discount_price')).order_by('min_price')
@@ -271,7 +274,8 @@ def product_details(request,id):
 
 def category_product(request, id):
     categories = Category.objects.get(id=id)
-    products = Product.objects.filter(category=categories, active=True)
+    products = Product.objects.filter(variants__isnull=False).distinct()
+    products = Product.objects.filter(category=categories, active=True,variants__isnull=False).distinct()
     return render(request, 'user/products.html', {'categories': categories, 'products': products})
 
 def product_detail(request,id):

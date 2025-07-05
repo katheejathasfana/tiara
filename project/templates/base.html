@@ -9,11 +9,9 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css"
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css"
     integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    crossorigin="anonymous" referrerpolicy="no-referrer" /> 
   <script src="https://unpkg.com/js-image-zoom@0.4.1/js-image-zoom.js" type="application/javascript"></script>
   
 
@@ -87,15 +85,16 @@
       </li>
       <li>
         <a href="{% url 'cart' %}">
-          <i class="ri-shopping-cart-fill text-2xl relative">
-            {% if cartitem > 0 %}
-              <span class="bg-yellow-900 text-white w-3 h-4 rounded-full absolute -top-1 -right-1 flex items-center justify-center text-sm">
-                  {{ cartitem }}
-              </span>
-              {% endif %}
-          </i>
-      </a>
-  </li>
+            <i class="ri-shopping-cart-fill text-2xl relative">
+                {% comment %} {% if cartitem and cartitem > 0 %}
+                    <span class="bg-yellow-900 text-white w-4 h-4 rounded-full absolute -top-2 -right-2 flex items-center justify-center text-xs">
+                        {{ cartitem }}
+                    </span>
+                {% endif %} {% endcomment %}
+            </i>
+        </a>
+    </li>
+    
         <li>
           <button type="button"
             class="text-white bg-[#844E23] w-20  focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm px-4 py-2 text-center "><a

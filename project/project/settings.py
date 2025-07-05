@@ -24,14 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-0ok==z9sh-#&d6v+amhxcu!5_gbucnt#mc8xsnb8v9imzklfwv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
 
-CSRF_TRUSTED_ORIGINS = ['https://tiaara.shop', 'https://www.tiaara.shop']
-CSRF_TRUSTED_ORIGINS = ['https://tiaara.shop']
-CSRF_USE_SESSIONS = True
 
 
 # Application definition
