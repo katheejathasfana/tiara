@@ -35,6 +35,7 @@ def admin_login(request):
     
     return render(request, 'admin/admin.html')
 
+@never_cache
 @staff_member_required(login_url='admin_login')
 @login_required(login_url='admin_login')
 def dashboard(request):

@@ -135,7 +135,7 @@ def is_strong_password(password):
         return False
     return True
 
-
+@never_cache
 def resend_otp(request):
     email=request.session.get('email')
     user=Custom_user.objects.get(email=email)
@@ -151,7 +151,7 @@ def resend_otp(request):
     return redirect('verification')
     
 
-
+@never_cache
 def verification(request):
     email = request.session.get('email')
     print(email)
@@ -217,7 +217,8 @@ def forgetpassword(request):
         else:
             messages.error(request,"User deosn't exist")
             return redirect('login')
-        
+
+@never_cache       
 def otp_verify(request, email):
     if request.method == 'POST':
         otp_entered = "".join(request.POST.get(f'otp{i}', '') for i in range(1, 7))
@@ -235,6 +236,8 @@ def otp_verify(request, email):
 
     return render(request, 'user/otp_verify.html', {'email': email})
 
+
+@never_cache
 def resetpassword(request,email):
     user=Custom_user.objects.get(email=email)
     if user.is_verified:
