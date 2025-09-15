@@ -175,3 +175,8 @@ MEDIA_URL = '/media/'
 
 KEY = 'rzp_test_uxJYg29NA4iFLt'
 SECRET = 'l7lYgiPEXWEZZwGasNxSKL7n'
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://tiara-2884.onrender.com'
+]
+
