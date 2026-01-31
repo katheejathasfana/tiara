@@ -26,6 +26,11 @@ urlpatterns = [
     path('',include('authentication.urls')), 
     path('cart/',include('cart.urls')),
     path('userdetails/', include('userdetails.urls')),
+
+    path('sitemap.xml', TemplateView.as_view(
+        template_name="sitemap.xml",
+        content_type='application/xml'  # Important!
+    )),
     
 
 ]
